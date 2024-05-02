@@ -1,4 +1,7 @@
 package es.uvigo.tfg.valvi.mapper;
+import java.util.List;
+
+import es.uvigo.tfg.valvi.dto.ReducedVideogameDto;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.entity.Videogame;
 import org.mapstruct.Mapper;
@@ -26,4 +29,14 @@ public interface VideogameMapper {
      */
     @Mapping(source = "id", target = "id", defaultExpression = "java( java.util.UUID.randomUUID() )")
     Videogame toVideogame(VideogameDto dto);
+    
+    Videogame toVideogameFromString(String videogame);
+
+//    @Mapping(source = "name", target = "name")
+//    @Mapping(source = "steam_appid", target = "storeId")
+//    @Mapping(source = "detailed_description", target = "description")
+//    @Mapping(source = "header_image", target = "image")
+//    @Mapping(source = "release_date.date", target = "releaseDate")
+//    VideogameDto toVideogameDtoFromString(String videogame);
+
 }

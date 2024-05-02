@@ -1,5 +1,6 @@
 package es.uvigo.tfg.valvi.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.VideogameDto;
@@ -32,6 +33,12 @@ public class VideogameController {
     @ResponseStatus(HttpStatus.OK)
     public List<VideogameDto> findVideogames(VideogameFiltering videogameFiltering){
         return this.videogameService.findVideogames(videogameFiltering);
+    }
+    
+    @GetMapping("/steamapi/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public VideogameDto getSteamVideogame(@PathVariable Integer id) throws IOException {
+        return this.videogameService.getSteamVideogame(id);
     }
 
     /**

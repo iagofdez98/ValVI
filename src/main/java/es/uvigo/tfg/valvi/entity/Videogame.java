@@ -31,6 +31,8 @@ public class Videogame {
     private String image;
     
     private Integer storeId;
+
+    private String description;
     
     private String storeName;
     

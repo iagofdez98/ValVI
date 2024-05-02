@@ -3,6 +3,7 @@ package es.uvigo.tfg.valvi.mapper;
 import es.uvigo.tfg.valvi.dto.UserDto;
 import es.uvigo.tfg.valvi.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * The interface User mapper.
@@ -24,5 +25,6 @@ public interface UserMapper {
      * @param dto the dto
      * @return the user
      */
+    @Mapping(source = "role", target = "role", defaultValue = "User")
     User toUser(UserDto dto);
 }
