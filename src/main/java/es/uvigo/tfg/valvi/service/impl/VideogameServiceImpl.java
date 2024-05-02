@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -12,15 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.uvigo.tfg.valvi.dto.ReducedVideogameDto;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.dto.filters.VideogameFiltering;
-import es.uvigo.tfg.valvi.entity.Videogame;
 import es.uvigo.tfg.valvi.mapper.VideogameMapper;
 import es.uvigo.tfg.valvi.repository.VideogameRepository;
 import es.uvigo.tfg.valvi.service.VideogameService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.gson.GsonBuilderCustomizer;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -48,8 +46,8 @@ public class VideogameServiceImpl implements VideogameService {
 
   @Override
   public VideogameDto upsertVideogame(VideogameDto videogameDto){
-    Videogame videogame = this.videogameRepository.save(this.videogameMapper.toVideogame(videogameDto));
-    return this.videogameMapper.toVideogameDto(videogame);
+    this.videogameRepository.save(this.videogameMapper.toVideogame(videogameDto));
+    return videogameDto;
   }
   
   @Override
@@ -60,11 +58,11 @@ public class VideogameServiceImpl implements VideogameService {
     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
     con.setRequestMethod("GET");
     int responseCode = con.getResponseCode();
-    System.out.println("GET Response Code :: " + responseCode);
+    log.info("GET Response Code :: " + responseCode);
     if (responseCode == HttpURLConnection.HTTP_OK) { // success
       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
       String inputLine;
-      StringBuffer response = new StringBuffer();
+      StringBuilder response = new StringBuilder();
 
       while ((inputLine = in.readLine()) != null) {
         response.append(inputLine);
@@ -75,10 +73,10 @@ public class VideogameServiceImpl implements VideogameService {
 
       return this.objectMapper.readValue(arrayJson, new TypeReference<List<ReducedVideogameDto>>(){});
     } else {
-      System.out.println("GET request did not work.");
+      log.error("GET request did not work.");
     }
     
-    return null;
+    return Collections.emptyList();
   }
 
   @Override
@@ -90,22 +88,20 @@ public class VideogameServiceImpl implements VideogameService {
     con.setRequestMethod("GET");
     con.setRequestProperty("appids", String.valueOf(id));
     int responseCode = con.getResponseCode();
-    System.out.println("GET Response Code :: " + responseCode);
+    log.info("GET Response Code :: " + responseCode);
     if (responseCode == HttpURLConnection.HTTP_OK) { // success
       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
       String inputLine;
-      StringBuffer response = new StringBuffer();
+      StringBuilder response = new StringBuilder();
 
       while ((inputLine = in.readLine()) != null) {
         response.append(inputLine);
       }
       in.close();
 
-      VideogameDto dto = this.objectMapper.readValue(response.toString().substring(29, response.length()-2), VideogameDto.class);
-      
-      return dto;
+      return this.objectMapper.readValue(response.substring(29, response.length()-2), VideogameDto.class);
     } else {
-      System.out.println("GET request did not work.");
+      log.error("GET request did not work.");
     }
 
     return null;
