@@ -7,6 +7,8 @@ import es.uvigo.tfg.valvi.dto.UserDto;
  */
 public interface UserService {
 
+  boolean authenticate(UserDto userDto);
+
   /**
    * Find user user dto.
    *

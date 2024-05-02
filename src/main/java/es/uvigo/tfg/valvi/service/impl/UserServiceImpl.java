@@ -1,7 +1,5 @@
 package es.uvigo.tfg.valvi.service.impl;
 
-import java.util.List;
-
 import es.uvigo.tfg.valvi.dto.UserDto;
 import es.uvigo.tfg.valvi.entity.User;
 import es.uvigo.tfg.valvi.mapper.UserMapper;
@@ -28,6 +26,11 @@ public class UserServiceImpl implements UserService {
 
   @NonNull
   private UserMapper userMapper;
+  
+  @Override
+  public boolean authenticate(UserDto userDto) {
+    return this.userRepository.findByUsernameAndPassword(userDto.getUsername(), userDto.getPassword()).isPresent();
+  }
   
   @Override
   public UserDto findUser(String username) {

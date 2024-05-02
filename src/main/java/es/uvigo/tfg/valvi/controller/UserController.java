@@ -13,11 +13,24 @@ import org.springframework.web.bind.annotation.*;
  */
 @Validated
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/users")
 public class UserController {
   
   @Autowired
   private UserService userService;
+
+  /**
+   * Authenticate boolean.
+   *
+   * @param userDto the user dto
+   * @return the boolean
+   */
+  @PostMapping("/authenticate")
+  @ResponseStatus(HttpStatus.OK)
+  public boolean authenticate(@RequestBody @NonNull UserDto userDto){
+    return this.userService.authenticate(userDto);
+  }
 
   /**
    * Find user user dto.
