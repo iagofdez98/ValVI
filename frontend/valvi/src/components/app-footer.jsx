@@ -1,0 +1,19 @@
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+
+const Footer = () => {
+  return (
+    <footer className="footer">
+      <Container>
+        <hr />
+        <Row>
+          <Col md={12}>
+            <p className="text-center">© 2024 Iago Fernández Martínez</p>
+          </Col>
+        </Row>
+      </Container>
+    </footer>
+  );
+};
+
+export default Footer;

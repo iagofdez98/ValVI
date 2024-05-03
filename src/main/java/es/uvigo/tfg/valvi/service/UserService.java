@@ -1,5 +1,7 @@
 package es.uvigo.tfg.valvi.service;
 
+import java.util.Map;
+
 import es.uvigo.tfg.valvi.dto.UserDto;
 
 /**
@@ -7,7 +9,7 @@ import es.uvigo.tfg.valvi.dto.UserDto;
  */
 public interface UserService {
 
-  boolean authenticate(UserDto userDto);
+  Map<String, String> authenticate(String username, String password);
 
   /**
    * Find user user dto.

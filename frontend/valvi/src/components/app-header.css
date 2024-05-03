@@ -1,0 +1,4 @@
+.logo-blue {
+  height: 40px;
+  filter: brightness(0) invert(1) sepia(1) hue-rotate(200deg) saturate(5);
+}

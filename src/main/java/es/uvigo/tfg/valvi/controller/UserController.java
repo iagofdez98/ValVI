@@ -1,12 +1,19 @@
 package es.uvigo.tfg.valvi.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+
 import es.uvigo.tfg.valvi.dto.UserDto;
+import es.uvigo.tfg.valvi.entity.User;
 import es.uvigo.tfg.valvi.service.UserService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static es.uvigo.tfg.valvi.utils.PasswordToKeyConverter.convertPasswordToKey;
+import static es.uvigo.tfg.valvi.utils.PasswordToKeyConverter.generateSalt;
 
 /**
  * The type User controller.
@@ -28,8 +35,8 @@ public class UserController {
    */
   @PostMapping("/authenticate")
   @ResponseStatus(HttpStatus.OK)
-  public boolean authenticate(@RequestBody @NonNull UserDto userDto){
-    return this.userService.authenticate(userDto);
+  public Map<String, String> authenticate(@RequestBody @NonNull UserDto userDto) {
+    return this.userService.authenticate(userDto.getUsername(), userDto.getPassword());
   }
 
   /**
@@ -52,7 +59,11 @@ public class UserController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDto upsertUser(@RequestBody @NonNull UserDto userDto){
+  public UserDto upsertUser(@RequestBody @NonNull UserDto userDto) throws NoSuchAlgorithmException {
+    byte[] salt = generateSalt();
+    byte[] key = convertPasswordToKey(userDto.getPassword(), salt);
+    userDto.setPassword(new String(key));
+    
     return this.userService.upsertUser(userDto);
   }
 

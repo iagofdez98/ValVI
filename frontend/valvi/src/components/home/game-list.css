@@ -1,0 +1,13 @@
+.text-with-shadow {
+  text-shadow: 1px 2px 4px #000;
+}
+
+.cards{
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cards:hover{
+  box-shadow: 5px 6px 6px 2px #000;
+  transform: scale(1.1);
+}

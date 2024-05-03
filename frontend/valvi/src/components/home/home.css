@@ -1,0 +1,19 @@
+.custom-vertical-line {
+  border-left: 1px solid #343a40; /* Color gris oscuro */
+  height: 100%; /* Asegura que la línea tenga la misma altura que el contenido */
+}
+
+.text-left {
+  font-weight:500;
+  text-transform:uppercase;
+}
+
+.text-left:after {
+    background-color: #c50000;
+    border-radius: 0.25rem;
+    content: '';
+    display: block;
+    height: 0.25rem;
+    width: 42px;
+    margin-top: 0.75rem;
+}
