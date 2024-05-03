@@ -30,13 +30,9 @@ public interface VideogameMapper {
     @Mapping(source = "id", target = "id", defaultExpression = "java( java.util.UUID.randomUUID() )")
     Videogame toVideogame(VideogameDto dto);
     
+    List<VideogameDto> toVideogameDtoList(List<Videogame> videogames);
+    
     Videogame toVideogameFromString(String videogame);
-
-//    @Mapping(source = "name", target = "name")
-//    @Mapping(source = "steam_appid", target = "storeId")
-//    @Mapping(source = "detailed_description", target = "description")
-//    @Mapping(source = "header_image", target = "image")
-//    @Mapping(source = "release_date.date", target = "releaseDate")
-//    VideogameDto toVideogameDtoFromString(String videogame);
+    
 
 }

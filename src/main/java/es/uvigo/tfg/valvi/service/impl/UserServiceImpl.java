@@ -1,7 +1,5 @@
 package es.uvigo.tfg.valvi.service.impl;
 
-import static javax.crypto.Cipher.SECRET_KEY;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -21,7 +19,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 

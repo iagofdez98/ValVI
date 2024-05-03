@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import LoadingPage from './components/auth/auth';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/home/home';
-import Header from './components/app-header';
+import GameDetail from './components/detail/game-detail';
 import Footer from './components/app-footer';
+import Header from './components/app-header';
 
 const App = () => {
-  const [isLogged, setIsLogged] = useState(false);
-
-  return (<div className='bg-dark text-light'>
-    <Header/>
-    {/* <LoadingPage onLogin={setIsLogged}/> */}
-    <Home/>
-    <Footer/>
+  return (
+    <div className='bg-dark text-light'>
+      <Router>
+        <Header/>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/game/:id" element={<GameDetail />} />
+        </Routes>
+        <Footer/>
+      </Router>
     </div>
   );
 };

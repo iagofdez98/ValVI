@@ -41,42 +41,13 @@ public class VideogameServiceImpl implements VideogameService {
   
   @Override
   public List<VideogameDto> findVideogames(VideogameFiltering videogameFiltering){
-    return null;
+    return this.videogameMapper.toVideogameDtoList(this.videogameRepository.findAll());
   }
 
   @Override
   public VideogameDto upsertVideogame(VideogameDto videogameDto){
     this.videogameRepository.save(this.videogameMapper.toVideogame(videogameDto));
     return videogameDto;
-  }
-  
-  @Override
-  public List<ReducedVideogameDto> getReducedSteamVideogames() throws IOException {
-    String baseUrl = "api.steampowered.com";
-    String urlId = "/ISteamApps/GetAppList/v2";
-    URL obj = new URL("https", baseUrl, urlId);
-    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-    con.setRequestMethod("GET");
-    int responseCode = con.getResponseCode();
-    log.info("GET Response Code :: " + responseCode);
-    if (responseCode == HttpURLConnection.HTTP_OK) { // success
-      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-      String inputLine;
-      StringBuilder response = new StringBuilder();
-
-      while ((inputLine = in.readLine()) != null) {
-        response.append(inputLine);
-      }
-      in.close();
-      
-      String arrayJson = response.substring(19, response.length()-2);
-
-      return this.objectMapper.readValue(arrayJson, new TypeReference<List<ReducedVideogameDto>>(){});
-    } else {
-      log.error("GET request did not work.");
-    }
-    
-    return Collections.emptyList();
   }
 
   @Override

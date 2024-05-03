@@ -3,6 +3,7 @@ package es.uvigo.tfg.valvi.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import es.uvigo.tfg.valvi.dto.ReducedVideogameDto;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.dto.filters.VideogameFiltering;
@@ -27,15 +28,7 @@ public interface VideogameService {
    * @return the videogame dto
    */
   VideogameDto upsertVideogame(VideogameDto videogameDto);
-
-  /**
-   * Gets reduced steam videogames.
-   *
-   * @return the reduced steam videogames
-   * @throws IOException the io exception
-   */
-  List<ReducedVideogameDto> getReducedSteamVideogames() throws IOException;
-
+  
   /**
    * Gets steam videogame.
    *
@@ -52,5 +45,4 @@ public interface VideogameService {
    * @return the integer
    */
   Integer deleteVideogame(Integer id);
-  
 }
