@@ -28,5 +28,7 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
    * @param username the username
    * @return the rating
    */
-  Rating findByUsername(String username);
+  List<Rating> findByUsername(User username);
+
+  Rating findByUsernameAndVideogame(User username, Videogame videogame);
 }

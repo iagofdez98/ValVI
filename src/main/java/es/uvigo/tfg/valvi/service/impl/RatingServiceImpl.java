@@ -3,13 +3,21 @@ package es.uvigo.tfg.valvi.service.impl;
 import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.RatingDto;
+import es.uvigo.tfg.valvi.dto.ReducedRatingDto;
+import es.uvigo.tfg.valvi.dto.UserDto;
 import es.uvigo.tfg.valvi.entity.Rating;
+import es.uvigo.tfg.valvi.entity.User;
 import es.uvigo.tfg.valvi.entity.Videogame;
+import es.uvigo.tfg.valvi.enumerate.VideogameStateEnum;
 import es.uvigo.tfg.valvi.mapper.RatingMapper;
+import es.uvigo.tfg.valvi.mapper.UserMapper;
+import es.uvigo.tfg.valvi.mapper.VideogameMapper;
 import es.uvigo.tfg.valvi.repository.RatingRepository;
 import es.uvigo.tfg.valvi.repository.VideogameRepository;
 import es.uvigo.tfg.valvi.service.RatingService;
 import javax.persistence.EntityNotFoundException;
+
+import es.uvigo.tfg.valvi.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +40,24 @@ public class RatingServiceImpl implements RatingService {
   private VideogameRepository videogameRepository;
 
   @NonNull
+  private UserService userService;
+  
+  @NonNull
+  private UserMapper userMapper;
+  
+  @NonNull
   private RatingMapper ratingMapper;
+  
+  @NonNull
+  private VideogameMapper videogameMapper;
+  
+  @Override
+  public ReducedRatingDto getRatingVideogameByIdAndUsername(Integer videogameId, String username) {
+    Videogame videogame = this.videogameRepository.findById(videogameId).orElseThrow(() -> new EntityNotFoundException("Requested document/s have not been found"));
+    User user = this.userMapper.toUser(this.userService.findUser(username));
+    Rating rating = this.ratingRepository.findByUsernameAndVideogame(user, videogame);
+    return this.ratingMapper.toReducedRatingDto(rating);
+  }
   
   @Override
   public Long getAverageRatingByVideogame(Integer id) {
@@ -42,15 +67,32 @@ public class RatingServiceImpl implements RatingService {
   }
 
   @Override
-  public RatingDto getRatingByUser(String username) {
-    Rating rating = this.ratingRepository.findByUsername(username);
-    return this.ratingMapper.toRatingDto(rating); 
+  public List<ReducedRatingDto> getRatingByUser(String username) {
+    User user = this.userMapper.toUser(this.userService.findUser(username));
+    List<Rating> ratingList = this.ratingRepository.findByUsername(user);
+    return this.ratingMapper.toReducedRatingDtoList(ratingList); 
   }
 
   @Override
-  public RatingDto upsertRating(RatingDto ratingDto){
-    Rating rating = this.ratingRepository.save(this.ratingMapper.toRating(ratingDto));
-    return this.ratingMapper.toRatingDto(rating);
+  public ReducedRatingDto upsertRating(ReducedRatingDto ratingDto){
+    Rating existingRate = this.ratingRepository.findByUsernameAndVideogame(this.userMapper.toUser(this.userService.findUser(ratingDto.getUsername())),
+            this.videogameMapper.toVideogame(ratingDto.getVideogame()));
+    
+    UserDto user = this.userService.findUser(ratingDto.getUsername());
+    RatingDto savedRating = RatingDto.builder()
+            .qualification(ratingDto.getQualification())
+            .state(VideogameStateEnum.valueOf(ratingDto.getState() != null ? ratingDto.getState() : "NONE"))
+            .username(user)
+            .videogame(ratingDto.getVideogame())
+            .build();
+    
+    if(existingRate != null){
+      savedRating.setId(existingRate.getId());
+      savedRating.setState(existingRate.getState());
+    }
+    
+    Rating rating = this.ratingRepository.save(this.ratingMapper.toRating(savedRating));
+    return this.ratingMapper.toReducedRatingDto(rating);
   }
 
   @Override

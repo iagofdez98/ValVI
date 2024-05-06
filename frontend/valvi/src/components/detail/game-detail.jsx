@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './game-detail.css';
 import { useParams } from 'react-router-dom';
 import { Container, Col, Row, Button } from 'react-bootstrap';
-import { getGameById } from '../../services/videogame-service';
+import { getRatingByUserAndGame } from '../../services/rating-service';
+import { getDateFormatted } from '../utils/utils';
+import RatingModal from './rating-modal.jsx';
 
 const reviews = [{
     id: 2,
@@ -17,30 +19,37 @@ const reviews = [{
 
 const GameDetail = () => {
   const { id } = useParams();
-  const [game, setGame] = useState({});
+  const [gameInfo, setGameInfo] = useState({});
   const [gameReview, setGameReview] = useState([])
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
 
   useEffect(() => {
-    getGameById(id).then(setGame);
+    getRatingByUserAndGame(id).then(setGameInfo)
     setGameReview(reviews.filter(review => review.gameId === parseInt(id)))
   }, [id]);
 
   return (
     <Container fluid>
+      {gameInfo.videogame ? <>
+      <RatingModal show={isRatingModalOpen} handleClose={() => setIsRatingModalOpen(false)} game={gameInfo?.videogame} />
       <Row className="justify-content-center align-items-center h-100">
         <Col lg="9" xl="7">
             <Row>
               <Container className="position-relative">
                 <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
                   <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                    <img class="postcard__img" src={game.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
+                    <img class="postcard__img" src={gameInfo?.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
                   </div>
                   <div className="ms-3 text-with-shadow" style={{ marginTop: '130px' }}>
-                    <h1>{game.name}</h1>
+                    <h1>{gameInfo?.videogame.name}</h1>
                   </div>
                 </div>
                 <div className="position-absolute top-0 end-0 mt-3 me-4">
-                  <h3 className="bg-dark px-2 py-1 rounded text-white">{game.averageRating}</h3>
+                  <h3 className="bg-dark px-2 py-1 rounded text-white text-center">{gameInfo?.videogame.averageRating}</h3>
+                  {gameInfo?.qualification ?
+                    <p className="px-2 py-1 text-white">Tu nota: {gameInfo?.qualification}</p> :
+                    <Button variant="light" onClick={() => setIsRatingModalOpen(true)}>¿Valorar?</Button>
+                  }
                 </div>
               </Container>
             </Row>
@@ -55,20 +64,21 @@ const GameDetail = () => {
                 <Col xs={9} className='mt-4'>
                   <div>
                     <h3>Sobre el juego</h3>
-                    <p className='mb-0'><strong>Desarrollador:</strong> {game.developer}</p>
-                    <p><strong>Fecha de lanzamiento:</strong> {game.releaseDate}</p>
-                    <p>{game.description}</p>
+                    <p className='mb-0'><strong>Desarrollador:</strong> {gameInfo?.videogame.developer}</p>
+                    <p><strong>Fecha de lanzamiento:</strong> {getDateFormatted(gameInfo?.videogame.releaseDate)}</p>
+                    <p>{gameInfo?.videogame.description}</p>
                   </div>
                   <div>
                     <h3>Reseñas</h3>
                     {gameReview?.map(review =>
-                      <div>{review.description}</div>)}
+                      <div key={review.id}>{review.description}</div>)}
                   </div>
                 </Col>
               </Row>
             </Row>
         </Col>
-      </Row>
+      </Row></>
+      : <div>Loading...</div>}
     </Container>
   );
 };

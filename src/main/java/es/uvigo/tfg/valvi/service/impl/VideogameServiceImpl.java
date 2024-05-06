@@ -2,7 +2,6 @@ package es.uvigo.tfg.valvi.service.impl;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.dto.filters.VideogameFiltering;
 import es.uvigo.tfg.valvi.mapper.VideogameMapper;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * The type Videogame service.
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Service
 @Validated
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class VideogameServiceImpl implements VideogameService {
   
@@ -29,9 +26,6 @@ public class VideogameServiceImpl implements VideogameService {
   private VideogameRepository videogameRepository;
   @NonNull
   private VideogameMapper videogameMapper;
-  
-  @NonNull
-  private ObjectMapper objectMapper;
   
   @Override
   public List<VideogameDto> findVideogames(VideogameFiltering videogameFiltering){
@@ -48,7 +42,7 @@ public class VideogameServiceImpl implements VideogameService {
   public VideogameDto getVideogameById(Integer id){
       return this.videogameMapper.toVideogameDto(this.videogameRepository.findById(id).orElse(null));
   }
-
+  
   /*@Override
   public VideogameDto getSteamVideogame(Integer id) throws IOException {
     String baseUrl = "store.steampowered.com";

@@ -1,13 +1,17 @@
 package es.uvigo.tfg.valvi.mapper;
 
 import es.uvigo.tfg.valvi.dto.RatingDto;
+import es.uvigo.tfg.valvi.dto.ReducedRatingDto;
 import es.uvigo.tfg.valvi.entity.Rating;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
 
 /**
  * The interface Rating mapper.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class, VideogameMapper.class})
 public interface RatingMapper {
 
     /**
@@ -25,4 +29,21 @@ public interface RatingMapper {
      * @return the rating
      */
     Rating toRating(RatingDto dto);
+    
+    /**
+     * To reduced rating dto reduced rating dto.
+     *
+     * @param rating the rating
+     * @return the reduced rating dto
+     */
+    @Mapping(source = "username.username", target = "username")
+    ReducedRatingDto toReducedRatingDto(Rating rating);
+    
+    /**
+     * To reduced rating dto list list.
+     *
+     * @param ratings the ratings
+     * @return the list
+     */
+    List<ReducedRatingDto> toReducedRatingDtoList(List<Rating> ratings);
 }

@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
     User user = this.userRepository.findById(userDto.getUsername()).orElseThrow(() -> new EntityNotFoundException("Requested document/s have not been found"));
     String token = this.jwtService.getToken(this.userMapper.toUserDto(user));
-    return AuthResponse.builder().token(token).build();
+    return AuthResponse.builder().token(token).username(userDto.getUsername()).build();
   }
 
   @Override

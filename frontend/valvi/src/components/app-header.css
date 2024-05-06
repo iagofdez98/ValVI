@@ -2,3 +2,8 @@
   height: 40px;
   filter: brightness(0) invert(1) sepia(1) hue-rotate(200deg) saturate(5);
 }
+
+.custom-navbar {
+  margin-left: 40px;
+  margin-right: 20px;
+}

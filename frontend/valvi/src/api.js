@@ -1,4 +1,4 @@
-import { setAuthToken, getAuthToken } from "./api_helper";
+import { setAuthToken, getAuthToken, setUsername, getUsername } from "./api_helper";
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -73,6 +73,7 @@ const loginUser = async (username, password) => {
 
     const result = await response.json();
     setAuthToken(result.token);
+    setUsername(result.username);
     return result;
   } catch (error) {
     console.error('Error:', error.message);
@@ -107,9 +108,78 @@ const registerUser = async (username, password) => {
   }
 }
 
+const getGamesByUser = async () => {
+  try {
+    const url = `${BASE_URL}/ratings/${getUsername()}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+};
+
+const getRatingByUserAndGame = async (gameId) => {
+  try {
+    const url = `${BASE_URL}/ratings/${gameId}/${getUsername()}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+};
+
+const createRating = (game, qualification) => {
+  const url = `${BASE_URL}/ratings`;
+  const bodyData = {
+    videogame: game,
+    qualification,
+    username : getUsername()
+  };
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getAuthToken() || ''
+    },
+    body: JSON.stringify(bodyData),
+  });
+}
+
 export default {
   loginUser,
   registerUser,
   getGames,
-  getGameById
+  getGameById,
+  getGamesByUser,
+  getRatingByUserAndGame,
+  createRating
 }

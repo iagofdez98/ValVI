@@ -16,19 +16,21 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "RATING")
+@Table(name = "USERS_VIDEOGAMES")
 public class Rating {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
+    @Column(name = "rating")
     private Integer qualification;
     
+    @Column(name = "state")
     private VideogameStateEnum state;
     
     @OneToOne
-    @JoinColumn(name = "videogame_id", referencedColumnName = "id")
+    @JoinColumn(name = "id_videogame", referencedColumnName = "id")
     private Videogame videogame;
     
     @OneToOne

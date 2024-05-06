@@ -6,3 +6,11 @@ export const getAuthToken = () => {
 export const setAuthToken = (token) => {
   localStorage.setItem('auth_token', token);
 }
+
+export const getUsername = () => {
+  return localStorage.getItem('username');
+}
+
+export const setUsername = (username) => {
+  localStorage.setItem('username', username);
+}

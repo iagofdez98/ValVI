@@ -1,29 +1,30 @@
 import React from 'react';
 import "./app-header.css";
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import logo from "../images/logo-valvi.png"
 
-const Header = () => {
+const Header = ({ username }) => {
     const handleImageClick = () => {
         window.location.href = '/home';
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="pl-3">
-            <Container>
-                <img src={logo} onClick={handleImageClick} alt="Valvi" className="logo-blue"/>
-                <Navbar.Brand onClick={handleImageClick}>ValVi</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
+        <Navbar bg="dark" variant="dark" expand="lg" className='custom-navbar'>
+            <img src={logo} onClick={handleImageClick} alt="Valvi" className="logo-blue"/>
+            <Navbar.Brand onClick={handleImageClick}>ValVi</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="me-auto">
                     <Nav.Link href="/games">Tus juegos</Nav.Link>
                     <Nav.Link href="#about">About</Nav.Link>
                     <Nav.Link href="#contact">Contact</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
+                </Nav>
+                <Nav>
+                    <Nav.Link>{username}</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
         </Navbar>
     );
-};
+}
 
 export default Header;

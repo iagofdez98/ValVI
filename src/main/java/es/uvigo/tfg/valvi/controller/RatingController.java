@@ -1,12 +1,14 @@
 package es.uvigo.tfg.valvi.controller;
 
-import es.uvigo.tfg.valvi.dto.RatingDto;
+import es.uvigo.tfg.valvi.dto.ReducedRatingDto;
 import es.uvigo.tfg.valvi.service.RatingService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * The type Rating controller.
@@ -40,7 +42,7 @@ public class RatingController {
    */
   @GetMapping("/{username}")
   @ResponseStatus(HttpStatus.OK)
-  public RatingDto getRatingByUser(@NonNull @PathVariable String username){
+  public List<ReducedRatingDto> getRatingByUser(@NonNull @PathVariable String username){
     return this.ratingService.getRatingByUser(username);
   }
 
@@ -52,7 +54,7 @@ public class RatingController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public RatingDto upsertRating(@RequestBody RatingDto ratingDto){
+  public ReducedRatingDto upsertRating(@RequestBody ReducedRatingDto ratingDto){
     return this.ratingService.upsertRating(ratingDto);
   }
 
@@ -66,5 +68,11 @@ public class RatingController {
   @ResponseStatus(HttpStatus.OK)
   public Integer deleteRating(Integer id) {
     return this.ratingService.deleteRating(id);
+  }
+  
+  @GetMapping("/{videogameId}/{username}")
+  @ResponseStatus(HttpStatus.OK)
+  public ReducedRatingDto getRatingVideogameByIdAndUsername(@NonNull @PathVariable Integer videogameId, @NonNull @PathVariable String username) {
+    return this.ratingService.getRatingVideogameByIdAndUsername(videogameId, username);
   }
 }
