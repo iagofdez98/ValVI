@@ -5,9 +5,6 @@ import api from '../../api';
 const LoadingPage = ({onLogin}) => {
   const handleLogin = (formData) => {
     api.loginUser(formData.username, formData.password)
-    .then((response) => {
-      onLogin(response);
-    })
   };
 
   const handleRegister = (formData) => {

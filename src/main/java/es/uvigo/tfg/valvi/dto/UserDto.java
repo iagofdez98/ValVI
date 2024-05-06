@@ -1,5 +1,6 @@
 package es.uvigo.tfg.valvi.dto;
 
+import es.uvigo.tfg.valvi.auth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,5 @@ public class UserDto {
 
     private String image;
 
-    private String role;
+    private Role role;
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Validated
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/ratings")
 public class RatingController {
   

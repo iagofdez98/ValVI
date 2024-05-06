@@ -1,3 +1,5 @@
+import { setAuthToken, getAuthToken } from "./api_helper";
+
 const BASE_URL = 'http://localhost:8080';
 
 const getGames = async (filter) => {
@@ -7,6 +9,7 @@ const getGames = async (filter) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
       },
       body: JSON.stringify(filter),
     });
@@ -31,6 +34,7 @@ const getGameById = async (id) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
       },
     });
 
@@ -48,7 +52,7 @@ const getGameById = async (id) => {
 };
 
 const loginUser = async (username, password) => {
-  const url = `${BASE_URL}/users/authenticate`;
+  const url = `${BASE_URL}/auth/login`;
   const data = {
     username: username,
     password: password
@@ -68,6 +72,7 @@ const loginUser = async (username, password) => {
     }
 
     const result = await response.json();
+    setAuthToken(result.token);
     return result;
   } catch (error) {
     console.error('Error:', error.message);
@@ -75,7 +80,7 @@ const loginUser = async (username, password) => {
 }
 
 const registerUser = async (username, password) => {
-  const url = `${BASE_URL}/users`;
+  const url = `${BASE_URL}/auth/register`;
   const bodyData = {
     username,
     password

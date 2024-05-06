@@ -25,6 +25,6 @@ public interface UserMapper {
      * @param dto the dto
      * @return the user
      */
-    @Mapping(source = "role", target = "role", defaultValue = "User")
+    @Mapping(source = "role", target = "role", defaultValue = "USER")
     User toUser(UserDto dto);
 }

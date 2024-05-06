@@ -10,7 +10,7 @@ const GameList = ({maxShowedGames, games = []}) => {
       {games.slice(0, maxShowedGames)?.map(game => (
           <Col key={game.id} xs={6} md={4} lg={2}>
             <Link to={`/game/${game.id}`}>
-              <Card className="cards">
+              <Card className="cards mb-3">
                 <Card.Img variant="top" src={game.image} />
                 <Card.Body>
                   <Card.Title style={{ fontSize: '0.8rem' }}>{game.name}</Card.Title>

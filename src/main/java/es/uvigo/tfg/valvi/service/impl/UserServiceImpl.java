@@ -1,24 +1,19 @@
 package es.uvigo.tfg.valvi.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import es.uvigo.tfg.valvi.auth.AuthResponse;
+import es.uvigo.tfg.valvi.auth.Role;
 import es.uvigo.tfg.valvi.dto.UserDto;
 import es.uvigo.tfg.valvi.entity.User;
 import es.uvigo.tfg.valvi.mapper.UserMapper;
 import es.uvigo.tfg.valvi.repository.UserRepository;
 import es.uvigo.tfg.valvi.service.UserService;
 import javax.persistence.EntityNotFoundException;
-
-import es.uvigo.tfg.valvi.utils.PasswordToKeyConverter;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -37,15 +32,33 @@ public class UserServiceImpl implements UserService {
   @NonNull
   private UserMapper userMapper;
   
+  @NonNull
+  private JwtServiceImpl jwtService;
+
+  private final AuthenticationManager authenticationManager;
+
+  private final PasswordEncoder passwordEncoder;
+  
   @Override
-  public Map<String, String> authenticate(String username, String password) {
-    Map<String, String> response = new HashMap<>();
-    if(this.userRepository.findByUsernameAndPassword(username, password).isPresent()) {
-      response.put("token", generateToken(username));
-    } else {
-      throw new RuntimeException("Invalid credentials");
-    }
-    return response;
+  public AuthResponse login(UserDto userDto) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+    User user = this.userRepository.findById(userDto.getUsername()).orElseThrow(() -> new EntityNotFoundException("Requested document/s have not been found"));
+    String token = this.jwtService.getToken(this.userMapper.toUserDto(user));
+    return AuthResponse.builder().token(token).build();
+  }
+
+  @Override
+  public AuthResponse register(UserDto userDto) {
+    User user = User.builder()
+            .username(userDto.getUsername())
+            .image(userDto.getImage())
+            .role(userDto.getRole() == null ? Role.USER : userDto.getRole())
+            .password(passwordEncoder.encode(userDto.getPassword()))
+            .name(userDto.getName())
+            .build();
+    
+    this.userRepository.save(user);
+    return AuthResponse.builder().token(this.jwtService.getToken(userDto)).build();
   }
 
   @Override
@@ -56,32 +69,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto upsertUser(UserDto userDto) {
-    User user = this.userRepository.save(this.userMapper.toUser(userDto));
-    return this.userMapper.toUserDto(user);
+    User user = this.userMapper.toUser(userDto);
+    if(this.userRepository.findById(user.getUsername()).isPresent()){
+      throw new RuntimeException("User already exists");      
+    }
+    this.userRepository.save(user);
+    return userDto;
   }
 
   @Override
   public String deleteUser(String username) {
     this.userRepository.deleteById(username);
     return username;
-  }
-
-  private String generateToken(String username) {
-    Date now = new Date();
-    Date expiryDate = new Date(now.getTime() + 3600000); // 1 hora de duración del token
-
-    return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(now)
-            .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS512, "secretkey")
-            .compact();
-  }
-  
-  // Función para verificar si la contraseña proporcionada es válida
-  public boolean verifyPassword(String enteredPassword, byte[] storedKey, byte[] salt) throws NoSuchAlgorithmException {
-    byte[] enteredKey = PasswordToKeyConverter.convertPasswordToKey(enteredPassword, salt);
-    // Comparar la clave derivada de la contraseña proporcionada con la clave almacenada en la base de datos
-    return MessageDigest.isEqual(enteredKey, storedKey);
   }
 }
