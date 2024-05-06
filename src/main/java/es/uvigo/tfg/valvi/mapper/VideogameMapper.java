@@ -1,11 +1,9 @@
 package es.uvigo.tfg.valvi.mapper;
 import java.util.List;
 
-import es.uvigo.tfg.valvi.dto.ReducedVideogameDto;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.entity.Videogame;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * The interface Videogame mapper.
@@ -27,7 +25,6 @@ public interface VideogameMapper {
      * @param dto the dto
      * @return the videogame
      */
-    @Mapping(source = "id", target = "id", defaultExpression = "java( java.util.UUID.randomUUID() )")
     Videogame toVideogame(VideogameDto dto);
     
     List<VideogameDto> toVideogameDtoList(List<Videogame> videogames);

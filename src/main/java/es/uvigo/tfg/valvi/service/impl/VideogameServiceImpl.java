@@ -1,16 +1,8 @@
 package es.uvigo.tfg.valvi.service.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.uvigo.tfg.valvi.dto.ReducedVideogameDto;
 import es.uvigo.tfg.valvi.dto.VideogameDto;
 import es.uvigo.tfg.valvi.dto.filters.VideogameFiltering;
 import es.uvigo.tfg.valvi.mapper.VideogameMapper;
@@ -49,8 +41,13 @@ public class VideogameServiceImpl implements VideogameService {
     this.videogameRepository.save(this.videogameMapper.toVideogame(videogameDto));
     return videogameDto;
   }
-
+  
   @Override
+  public VideogameDto getVideogameById(Integer id){
+      return this.videogameMapper.toVideogameDto(this.videogameRepository.findById(id).orElse(null));
+  }
+
+  /*@Override
   public VideogameDto getSteamVideogame(Integer id) throws IOException {
     String baseUrl = "store.steampowered.com";
     String urlId = "/api/appdetails?appids=" + id;
@@ -76,7 +73,8 @@ public class VideogameServiceImpl implements VideogameService {
     }
 
     return null;
-  }
+  }*/
+  
   @Override
   public Integer deleteVideogame(Integer id){
     this.videogameRepository.deleteById(id);

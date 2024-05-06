@@ -1,7 +1,6 @@
 import React from 'react';
 import "./app-header.css";
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import logo from "../images/logo-valvi.png"
 
 const Header = () => {
@@ -17,7 +16,7 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Nav.Link href="#link">Link</Nav.Link>
+                    <Nav.Link href="/games">Tus juegos</Nav.Link>
                     <Nav.Link href="#about">About</Nav.Link>
                     <Nav.Link href="#contact">Contact</Nav.Link>
                     </Nav>

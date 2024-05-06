@@ -1,5 +1,7 @@
 package es.uvigo.tfg.valvi.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
 
 /**
  * The type Genre.
@@ -18,11 +19,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "GENRE")
+@Table(name = "GENRES")
 public class Genre {
     
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     
     private String description;
 }

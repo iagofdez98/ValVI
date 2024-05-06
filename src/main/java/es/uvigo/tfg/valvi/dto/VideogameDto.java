@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The type Videogame dto.
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 public class VideogameDto {
 
-    private UUID id;
+    private Integer id;
 
     private Integer requiredAge;
 
@@ -27,16 +26,12 @@ public class VideogameDto {
     private String image;
     
     private String description;
-
-    private Integer storeId;
-
-    private String storeName;
-
+    
     private LocalDate releaseDate;
 
     private Long averageRating;
     
     private List<GenreDto> genres;
 
-    private List<DeveloperDto> developer;
+    private String developer;
 }

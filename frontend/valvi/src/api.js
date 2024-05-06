@@ -24,6 +24,28 @@ const getGames = async (filter) => {
   }
 };
 
+const getGameById = async (id) => {
+  try {
+    const url = `${BASE_URL}/videogames/${id}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+};
 
 const loginUser = async (username, password) => {
   const url = `${BASE_URL}/users/authenticate`;
@@ -83,5 +105,6 @@ const registerUser = async (username, password) => {
 export default {
   loginUser,
   registerUser,
-  getGames
+  getGames,
+  getGameById
 }

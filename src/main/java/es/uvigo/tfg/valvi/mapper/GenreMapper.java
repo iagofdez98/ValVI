@@ -5,7 +5,6 @@ import java.util.List;
 import es.uvigo.tfg.valvi.dto.GenreDto;
 import es.uvigo.tfg.valvi.entity.Genre;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * The interface Genre mapper.
@@ -27,7 +26,6 @@ public interface GenreMapper {
      * @param dto the dto
      * @return the genre
      */
-    @Mapping(source = "id", target = "id", defaultExpression = "java( java.util.UUID.randomUUID() )")
     Genre toGenre(GenreDto dto);
 
     /**

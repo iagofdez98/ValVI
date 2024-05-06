@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './home.css';
 import { Col, Container, Row } from 'react-bootstrap';
-import { getGames } from '../../services/videogame-service';
 import ImageCarousel from './carousel-home';
 import GameList from './game-list';
 import ReviewList from './review-list';
 
-const HomeContent = () => {
-  const [games, setGames] = useState([])
-
-  useEffect(() => {
-    getGames().then((data) => {
-      setGames(data)
-    })
-  }, []);
+const HomeContent = ({games = []}) => {
 
   return (
   <Container fluid>

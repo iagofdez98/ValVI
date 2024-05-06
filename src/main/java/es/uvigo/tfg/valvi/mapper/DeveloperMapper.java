@@ -5,8 +5,6 @@ import java.util.List;
 import es.uvigo.tfg.valvi.dto.DeveloperDto;
 import es.uvigo.tfg.valvi.entity.Developer;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
 /**
  * The interface Developer mapper.
@@ -28,7 +26,6 @@ public interface DeveloperMapper {
      * @param dto the dto
      * @return the developer
      */
-    @Mapping(source = "id", target = "id", defaultExpression = "java( java.util.UUID.randomUUID() )")
     Developer toDeveloper(DeveloperDto dto);
 
     /**

@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 /**
  * The type Developer dto.
  */
@@ -16,7 +14,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 public class DeveloperDto {
     
-    private UUID id;
+    private Integer id;
 
     private String description;
 }

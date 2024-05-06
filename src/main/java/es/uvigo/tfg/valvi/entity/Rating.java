@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 /**
  * The type Rating.
@@ -21,7 +20,8 @@ import java.util.UUID;
 public class Rating {
     
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     
     private Integer qualification;
     

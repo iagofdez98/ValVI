@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The type Videogame.
@@ -18,31 +17,34 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "VIDEOGAME")
+@Table(name = "VIDEOGAMES")
 public class Videogame {
     
     @Id
-    private UUID id;
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "REQUIRED_AGE")
     private Integer requiredAge;
     
+    @Column(name = "NAME")
     private String name;
     
+    @Column(name = "IMAGE")
     private String image;
     
-    private Integer storeId;
-
+    @Column(name = "DESCRIPTION")
     private String description;
     
-    private String storeName;
-    
+    @Column(name = "RELEASE_DATE")
     private LocalDate releaseDate;
     
+    @Column(name = "AVG_RATING")
     private Long averageRating;
+    
+    @Column(name = "DEVELOPER")
+    private String developer;
     
     @OneToMany
     private List<Genre> genres;
-    
-    @OneToMany
-    private List<Developer> developers;
 }
