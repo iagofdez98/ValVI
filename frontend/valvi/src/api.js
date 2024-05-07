@@ -127,6 +127,7 @@ const getGamesByUser = async () => {
     return data;
   } catch (error) {
     console.error('Se produjo un error:', error);
+    setAuthToken(null);
     // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
     throw error;
   }
@@ -156,7 +157,7 @@ const getRatingByUserAndGame = async (gameId) => {
   }
 };
 
-const upsertRating = (rating) => {
+const upsertRating = async (rating) => {
   const url = `${BASE_URL}/ratings`;
   const bodyData = {...rating, username: getUsername()};
 
@@ -170,6 +171,32 @@ const upsertRating = (rating) => {
   });
 }
 
+const getLastReviews = async (num) => {
+  try {
+    const url = `${BASE_URL}/reviews/lastReviews/${num}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+}
+
+
 export default {
   loginUser,
   registerUser,
@@ -177,5 +204,6 @@ export default {
   getGameById,
   getGamesByUser,
   getRatingByUserAndGame,
-  upsertRating
+  upsertRating,
+  getLastReviews
 }

@@ -46,6 +46,12 @@ public class ReviewController {
     return this.reviewService.findReviewsByUser(username);
   }
 
+  @GetMapping("/lastReviews/{integer}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<ReviewDto> findLastReviews(@NonNull @PathVariable Integer integer){
+    return this.reviewService.findLastReviews(integer);
+  }
+  
   /**
    * Upsert review review dto.
    *

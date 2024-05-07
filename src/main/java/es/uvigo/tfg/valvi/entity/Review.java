@@ -28,8 +28,8 @@ public class Review {
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "videogame_id", referencedColumnName = "id")
-    private Videogame videogameId;
+    @JoinColumn(name = "id_videogame", referencedColumnName = "id")
+    private Videogame videogame;
 
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username")

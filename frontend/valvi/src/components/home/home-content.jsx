@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './home.css';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Button } from 'react-bootstrap';
 import ImageCarousel from './carousel-home';
 import GameList from './game-list';
-import ReviewList from './review-list';
+import ReviewList from '../review/review-list';
 import { getGamesByUser } from '../../services/rating-service';
 
 const HomeContent = () => {
@@ -40,8 +40,10 @@ const HomeContent = () => {
           </Row>
           <Row className="mt-4">
             <Col className="d-flex flex-column mx-2">
-              <h3 className="mb-3 text-left">Reseñas recientes</h3>
-              <ReviewList/>
+            <Row className="align-items-center">
+              <h3 className="mb-3 text-left col-11">Reseñas recientes</h3>
+            </Row>
+            <ReviewList/>
             </Col>
           </Row>
         </Col>

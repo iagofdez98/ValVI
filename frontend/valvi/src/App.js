@@ -22,17 +22,15 @@ const App = () => {
   return (
     <div className='bg-dark text-light'>
       <Router>
+      {getAuthToken() != null ? <>
         <Header username={getUsername()} games={games}/>
-        {getAuthToken() != null ?
           <Routes>
             <Route path="/home" element={<HomeContent/>} />
-            <Route path="/game/:id" element={<GameDetail />} />
+            <Route path="/game/:id" element={<GameDetail games={games} />} />
             <Route path='/games' element={<HomeContent className='mt-4'><HomeContent listOnlyGames={true}/></HomeContent>} />
           </Routes>
-          :
-          <LoadingPage/>
-        }
-        <Footer/>
+        <Footer/></>
+        : <LoadingPage/>}
       </Router>
     </div>
   );

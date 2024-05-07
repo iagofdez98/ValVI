@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 /**
  * The interface Review mapper.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {VideogameMapper.class, UserMapper.class})
 public interface ReviewMapper {
 
     /**

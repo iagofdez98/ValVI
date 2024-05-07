@@ -1,5 +1,7 @@
 package es.uvigo.tfg.valvi.service.impl;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.ReviewDto;
@@ -7,7 +9,6 @@ import es.uvigo.tfg.valvi.entity.Review;
 import es.uvigo.tfg.valvi.mapper.ReviewMapper;
 import es.uvigo.tfg.valvi.repository.ReviewRepository;
 import es.uvigo.tfg.valvi.service.ReviewService;
-import javax.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,5 +52,11 @@ public class ReviewServiceImpl implements ReviewService {
   public Integer deleteReview(Integer id) {
     this.reviewRepository.deleteById(id);;
     return id;
+  }
+
+  @Override
+  public List<ReviewDto> findLastReviews(Integer integer) {
+    Pageable pageable = PageRequest.of(0, integer);
+    return this.reviewMapper.toReviewDtoList(this.reviewRepository.findByOrderByDateDesc(pageable));
   }
 }

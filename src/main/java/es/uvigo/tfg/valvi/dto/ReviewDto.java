@@ -22,7 +22,7 @@ public class ReviewDto {
 
     private String description;
 
-    private VideogameDto videogameId;
+    private VideogameDto videogame;
 
     private UserDto username;
 

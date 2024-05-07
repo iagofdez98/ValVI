@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './game-detail.css';
 import { useParams } from 'react-router-dom';
-import { Container, Col, Row, Button, Alert } from 'react-bootstrap';
+import { Container, Col, Row, Button } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getRatingByUserAndGame } from '../../services/rating-service';
 import { getDateFormatted } from '../utils/utils';
@@ -19,40 +19,47 @@ const reviews = [{
   }
 ]
 
-const GameDetail = () => {
+const GameDetail = ({games = []}) => {
   const { id } = useParams();
   const [gameInfo, setGameInfo] = useState({});
+  const [videogame, setVideogame] = useState({});
   const [gameReview, setGameReview] = useState([])
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
 
   useEffect(() => {
-    getRatingByUserAndGame(id).then(setGameInfo)
+    getRatingByUserAndGame(id)
+      .then(setGameInfo)
+      .catch(() => setGameInfo(({ ...gameInfo, videogame: games.find(game => game.id === parseInt(id))})));
     setGameReview(reviews.filter(review => review.gameId === parseInt(id)))
   }, [id]);
 
+  useEffect(() => {
+    gameInfo?.videogame ? setVideogame(gameInfo.videogame) : setVideogame(games.find(game => game.id === parseInt(id)));
+  }, [gameInfo]);
+
   const handleState = (state) => {
-    setGameInfo({ ...gameInfo, state });
+    setGameInfo({ ...gameInfo, videogame, state });
     upsertRating(gameInfo);
   };
 
   return (
     <Container fluid>
-      {gameInfo.videogame ? <>
-      <RatingModal show={isRatingModalOpen} handleClose={() => setIsRatingModalOpen(false)} game={gameInfo?.videogame} />
+      {videogame ? <>
+      <RatingModal show={isRatingModalOpen} handleClose={() => setIsRatingModalOpen(false)} game={videogame} />
       <Row className="justify-content-center align-items-center h-100">
         <Col lg="9" xl="7">
             <Row>
               <Container className="position-relative">
                 <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
-                  <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                    <img class="postcard__img" src={gameInfo?.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
+                  <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '13-5rem' }}>
+                    <img class="postcard__img" src={videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
                   </div>
                   <div className="ms-3 text-with-shadow" style={{ marginTop: '130px' }}>
-                    <h1>{gameInfo?.videogame.name}</h1>
+                    <h1>{videogame.name}</h1>
                   </div>
                 </div>
                 <div className="position-absolute top-0 end-0 mt-3 me-4">
-                  <h3 className="bg-dark px-2 py-1 rounded text-white text-center">{gameInfo?.videogame.averageRating}</h3>
+                  <h3 className="bg-dark px-2 py-1 rounded text-white text-center">{videogame.averageRating}</h3>
                   {gameInfo?.qualification ?
                     <p className="px-2 py-1 text-white">Tu nota: {gameInfo?.qualification}</p> :
                     <Button variant="light" onClick={() => setIsRatingModalOpen(true)}>¿Valorar?</Button>
@@ -73,9 +80,9 @@ const GameDetail = () => {
                 <Col xs={9} className='mt-4'>
                   <div>
                     <h3>Sobre el juego</h3>
-                    <p className='mb-0'><strong>Desarrollador:</strong> {gameInfo?.videogame.developer}</p>
-                    <p><strong>Fecha de lanzamiento:</strong> {getDateFormatted(gameInfo?.videogame.releaseDate)}</p>
-                    <p>{gameInfo?.videogame.description}</p>
+                    <p className='mb-0'><strong>Desarrollador:</strong> {videogame.developer}</p>
+                    <p><strong>Fecha de lanzamiento:</strong> {getDateFormatted(videogame.releaseDate)}</p>
+                    <p>{videogame.description}</p>
                   </div>
                   <div>
                     <h3>Reseñas</h3>

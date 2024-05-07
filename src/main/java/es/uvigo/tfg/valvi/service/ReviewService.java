@@ -40,4 +40,11 @@ public interface ReviewService {
    * @return the integer
    */
   Integer deleteReview(Integer id);
+
+  /**
+   * Find last reviews list.
+   *
+   * @return the list
+   */
+  List<ReviewDto> findLastReviews(Integer integer);
 }

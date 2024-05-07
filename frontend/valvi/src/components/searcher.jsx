@@ -19,7 +19,7 @@ function SearchableList({ games }) {
   }
 
   const handleClick = (item) => {
-    window.location.href = `/games/${item.id}`;
+    window.location.href = `/game/${item.id}`;
   };
 
   return (
