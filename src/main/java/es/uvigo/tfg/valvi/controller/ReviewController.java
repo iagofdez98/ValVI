@@ -25,13 +25,13 @@ public class ReviewController {
   /**
    * Find reviews by videogame list.
    *
-   * @param videogameId the videogame id
+   * @param id the id
    * @return the list
    */
-  @GetMapping
+  @GetMapping("/game/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public List<ReviewDto> findReviewsByVideogame(@NonNull Integer videogameId){
-    return this.reviewService.findReviewsByVideogame(videogameId);
+  public List<ReviewDto> findReviewsByVideogame(@NonNull @PathVariable Integer id){
+    return this.reviewService.findReviewsByVideogame(id);
   }
 
   /**
@@ -46,12 +46,18 @@ public class ReviewController {
     return this.reviewService.findReviewsByUser(username);
   }
 
+  /**
+   * Find last reviews list.
+   *
+   * @param integer the integer
+   * @return the list
+   */
   @GetMapping("/lastReviews/{integer}")
   @ResponseStatus(HttpStatus.OK)
   public List<ReviewDto> findLastReviews(@NonNull @PathVariable Integer integer){
     return this.reviewService.findLastReviews(integer);
   }
-  
+
   /**
    * Upsert review review dto.
    *

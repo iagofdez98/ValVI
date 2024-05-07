@@ -7,17 +7,9 @@ import { getRatingByUserAndGame } from '../../services/rating-service';
 import { getDateFormatted } from '../utils/utils';
 import RatingModal from './rating-modal.jsx';
 import { upsertRating } from '../../services/rating-service';
-
-const reviews = [{
-    id: 2,
-    gameId: 3 ,
-    title: "Sobrevalorado",
-    date: "2024-02-10",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!",
-    image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5xex.png",
-    rating: 6.5
-  }
-]
+import { getReviewsByGame } from '../../services/review-service';
+import ReviewList from '../review/review-list.jsx';
+import AddReviewModal from './modal-add-review.jsx';
 
 const GameDetail = ({games = []}) => {
   const { id } = useParams();
@@ -25,17 +17,23 @@ const GameDetail = ({games = []}) => {
   const [videogame, setVideogame] = useState({});
   const [gameReview, setGameReview] = useState([])
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
   useEffect(() => {
     getRatingByUserAndGame(id)
       .then(setGameInfo)
       .catch(() => setGameInfo(({ ...gameInfo, videogame: games.find(game => game.id === parseInt(id))})));
-    setGameReview(reviews.filter(review => review.gameId === parseInt(id)))
   }, [id]);
 
   useEffect(() => {
     gameInfo?.videogame ? setVideogame(gameInfo.videogame) : setVideogame(games.find(game => game.id === parseInt(id)));
   }, [gameInfo]);
+
+  useEffect(() => {
+    getReviewsByGame(id)
+      .then(setGameReview)
+      .catch(() => setGameReview([]));
+  }, [id, gameInfo]);
 
   const handleState = (state) => {
     setGameInfo({ ...gameInfo, videogame, state });
@@ -43,7 +41,7 @@ const GameDetail = ({games = []}) => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className='pt-5'>
       {videogame ? <>
       <RatingModal show={isRatingModalOpen} handleClose={() => setIsRatingModalOpen(false)} game={videogame} />
       <Row className="justify-content-center align-items-center h-100">
@@ -51,7 +49,7 @@ const GameDetail = ({games = []}) => {
             <Row>
               <Container className="position-relative">
                 <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
-                  <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '13-5rem' }}>
+                  <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '13.5rem' }}>
                     <img class="postcard__img" src={videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
                   </div>
                   <div className="ms-3 text-with-shadow" style={{ marginTop: '130px' }}>
@@ -85,9 +83,14 @@ const GameDetail = ({games = []}) => {
                     <p>{videogame.description}</p>
                   </div>
                   <div>
-                    <h3>Reseñas</h3>
-                    {gameReview?.map(review =>
-                      <div key={review.id}>{review.description}</div>)}
+                  <div className="pt-3 d-flex align-items-center">
+                    <div className="d-flex flex-grow-1">
+                      <h3 className="mr-auto">Reseñas</h3>
+                    </div>
+                    <Button variant="outline-dark" onClick={() => setIsReviewModalOpen(true)}>Añadir</Button>
+                  </div>
+                    <AddReviewModal show={isReviewModalOpen} handleClose={() => setIsReviewModalOpen(false)} videogame={videogame}/>
+                    <ReviewList reviews={gameReview}/>
                   </div>
                 </Col>
               </Row>

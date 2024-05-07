@@ -196,6 +196,44 @@ const getLastReviews = async (num) => {
   }
 }
 
+const getReviewsByGame = async (gameId) => {
+  try {
+    const url = `${BASE_URL}/reviews/game/${gameId}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+}
+
+const createReview = async (review) => {
+  const url = `${BASE_URL}/reviews`;
+  const bodyData = {...review, username: getUsername()};
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getAuthToken() || ''
+    },
+    body: JSON.stringify(bodyData),
+  });
+}
 
 export default {
   loginUser,
@@ -205,5 +243,7 @@ export default {
   getGamesByUser,
   getRatingByUserAndGame,
   upsertRating,
-  getLastReviews
+  getLastReviews,
+  getReviewsByGame,
+  createReview
 }

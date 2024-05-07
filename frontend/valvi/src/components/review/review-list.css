@@ -68,6 +68,13 @@ a, a:hover {
     flex-direction: column;
   }
 
+  .postcard__textlite {
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
   .postcard__preview-txt {
     overflow: hidden;
     text-overflow: ellipsis;

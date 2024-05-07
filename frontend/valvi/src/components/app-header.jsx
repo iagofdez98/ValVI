@@ -10,7 +10,7 @@ const Header = ({ username, games = []}) => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className='custom-navbar'>
+        <Navbar bg="dark" variant="dark" expand="lg" className='custom-navbar' fixed="top">
             <img src={logo} onClick={handleImageClick} alt="Valvi" className="logo-blue"/>
             <Navbar.Brand onClick={handleImageClick}>ValVi</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />

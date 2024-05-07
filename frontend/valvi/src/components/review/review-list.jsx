@@ -4,15 +4,15 @@ import { Container } from 'react-bootstrap';
 import { getLastReviews } from '../../services/review-service';
 import { getDateFormatted } from '../utils/utils';
 
-const ReviewList = ({gameId}) => {
+const ReviewList = ({reviews}) => {
   const [gameReviews, setGameReviews] = useState([])
 
   useEffect(() => {
-    // if (gameId) {
-      // fetchReviews(gameId)
-    // } else {
+    if (reviews) {
+      setGameReviews(reviews)
+    } else {
       getLastReviews(2).then(setGameReviews)
-    // }
+    }
   }, []);
 
   const renderArticle = (review) => {
@@ -34,10 +34,25 @@ const ReviewList = ({gameId}) => {
     </article>
   )};
 
+  const renderArticleLiteVersion = (review) => {
+    return (
+      <article className="postcard light blue">
+        <div className="postcard__textlite t-dark">
+          <h4 style={{ fontSize: '1rem', fontWeight: 'bold' }}>{review.title}</h4>
+          <div style={{ fontSize: '0.8rem', paddingLeft: '10px' }}>{review.description}</div>
+          <div className="row justify-content-end">
+            <div className="col-auto">
+              <p className="t-dark" style={{ fontStyle: 'italic' }}>- {review.username}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    )};
+
 
   return (
 	<Container className='py-2'>
-    {gameReviews.map(review => renderArticle(review))}
+    {gameReviews.map(review => reviews ? renderArticleLiteVersion(review) : renderArticle(review))}
   </Container>
   );
 }

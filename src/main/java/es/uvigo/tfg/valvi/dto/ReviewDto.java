@@ -24,7 +24,7 @@ public class ReviewDto {
 
     private VideogameDto videogame;
 
-    private UserDto username;
+    private String username;
 
     private LocalDate date;
 }

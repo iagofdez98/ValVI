@@ -1,7 +1,12 @@
 package es.uvigo.tfg.valvi.service.impl;
 
+import es.uvigo.tfg.valvi.dto.UserDto;
+import es.uvigo.tfg.valvi.mapper.UserMapper;
+import es.uvigo.tfg.valvi.service.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.ReviewDto;
@@ -30,6 +35,12 @@ public class ReviewServiceImpl implements ReviewService {
   @NonNull
   private ReviewMapper reviewMapper;
   
+  @NonNull
+  private UserService userService;
+  
+  @NonNull
+  private UserMapper userMapper;
+  
   @Override
   public List<ReviewDto> findReviewsByVideogame(Integer videogameId) {
     List<Review> reviews = this.reviewRepository.findByVideogameId(videogameId);
@@ -44,7 +55,12 @@ public class ReviewServiceImpl implements ReviewService {
 
   @Override
   public ReviewDto upsertReview(ReviewDto reviewDto) {
-    Review review = this.reviewRepository.save(this.reviewMapper.toReview(reviewDto));
+    UserDto user = this.userService.findUser(reviewDto.getUsername());
+    reviewDto.setUsername(null);
+    Review review = this.reviewMapper.toReview(reviewDto);
+    review.setUsername(this.userMapper.toUser(user));
+    review.setDate(LocalDate.now());
+    this.reviewRepository.save(review);
     return this.reviewMapper.toReviewDto(review);
   }
 

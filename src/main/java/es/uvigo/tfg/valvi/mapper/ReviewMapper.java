@@ -4,7 +4,9 @@ import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.ReviewDto;
 import es.uvigo.tfg.valvi.entity.Review;
+import es.uvigo.tfg.valvi.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * The interface Review mapper.
@@ -18,14 +20,19 @@ public interface ReviewMapper {
      * @param review the review
      * @return the review dto
      */
+    @Mapping(source = "username.username", target = "username")
     ReviewDto toReviewDto(Review review);
 
+    default String mapUserToString(User user) {
+        return user.getUsername();
+    }
     /**
      * To review review.
      *
      * @param dto the dto
      * @return the review
      */
+    @Mapping(ignore = true, target = "username")
     Review toReview(ReviewDto dto);
 
     /**
