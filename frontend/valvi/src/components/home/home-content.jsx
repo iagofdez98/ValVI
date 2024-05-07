@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './home.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import ImageCarousel from './carousel-home';
 import GameList from './game-list';
 import ReviewList from './review-list';
+import { getGamesByUser } from '../../services/rating-service';
 
-const HomeContent = ({games = []}) => {
+const HomeContent = () => {
+  const [games, setGames] = React.useState([])
+
+  useEffect(() => {
+    getGamesByUser().then((data) => {
+      setGames(data)
+    }).catch((error) => {
+      console.log(error)
+    });
+  }, []);
 
   const gamesPlayed = games.filter(e => e.state === "PLAYED").map(game => game.videogame)
   const gamesPending = games.filter(e => e.state === "PENDING").map(game => game.videogame)

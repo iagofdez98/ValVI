@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './game-detail.css';
 import { useParams } from 'react-router-dom';
-import { Container, Col, Row, Button } from 'react-bootstrap';
+import { Container, Col, Row, Button, Alert } from 'react-bootstrap';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { getRatingByUserAndGame } from '../../services/rating-service';
 import { getDateFormatted } from '../utils/utils';
 import RatingModal from './rating-modal.jsx';
+import { upsertRating } from '../../services/rating-service';
 
 const reviews = [{
     id: 2,
@@ -27,6 +29,11 @@ const GameDetail = () => {
     getRatingByUserAndGame(id).then(setGameInfo)
     setGameReview(reviews.filter(review => review.gameId === parseInt(id)))
   }, [id]);
+
+  const handleState = (state) => {
+    setGameInfo({ ...gameInfo, state });
+    upsertRating(gameInfo);
+  };
 
   return (
     <Container fluid>
@@ -57,9 +64,11 @@ const GameDetail = () => {
               <Row>
                 <Col className="button-group-column mt-custom" xs={3}>
                   <div className="d-flex flex-column">
-                    <Button className="button-style me-3 mb-2" variant="dark">Jugado</Button>
-                    <Button className='button-style' variant="dark">Pendiente</Button>
-                  </div>
+                  <ListGroup as="ul">
+                    <ListGroup.Item className='text-center state-button' active={gameInfo.state === "PLAYED"} onClick={() => handleState("PLAYED")}>Jugado</ListGroup.Item>
+                    <ListGroup.Item className='text-center state-button' active={gameInfo.state === "PENDING"} onClick={() => handleState("PENDING")}>Pendiente</ListGroup.Item>
+                  </ListGroup>
+                </div>
                 </Col>
                 <Col xs={9} className='mt-4'>
                   <div>

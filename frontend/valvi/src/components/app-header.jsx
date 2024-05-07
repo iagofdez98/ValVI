@@ -2,8 +2,9 @@ import React from 'react';
 import "./app-header.css";
 import { Navbar, Nav } from 'react-bootstrap';
 import logo from "../images/logo-valvi.png"
+import Searcher from './searcher';
 
-const Header = ({ username }) => {
+const Header = ({ username, games = []}) => {
     const handleImageClick = () => {
         window.location.href = '/home';
     };
@@ -20,7 +21,8 @@ const Header = ({ username }) => {
                     <Nav.Link href="#contact">Contact</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Nav.Link>{username}</Nav.Link>
+                    <Searcher games={games}/>
+                    <Nav.Link className='pr-4'>{username}</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

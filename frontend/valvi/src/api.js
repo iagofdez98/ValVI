@@ -156,13 +156,9 @@ const getRatingByUserAndGame = async (gameId) => {
   }
 };
 
-const createRating = (game, qualification) => {
+const upsertRating = (rating) => {
   const url = `${BASE_URL}/ratings`;
-  const bodyData = {
-    videogame: game,
-    qualification,
-    username : getUsername()
-  };
+  const bodyData = {...rating, username: getUsername()};
 
   return fetch(url, {
     method: 'POST',
@@ -181,5 +177,5 @@ export default {
   getGameById,
   getGamesByUser,
   getRatingByUserAndGame,
-  createRating
+  upsertRating
 }

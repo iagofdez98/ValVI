@@ -88,7 +88,7 @@ public class RatingServiceImpl implements RatingService {
     
     if(existingRate != null){
       savedRating.setId(existingRate.getId());
-      savedRating.setState(existingRate.getState());
+      savedRating.setState(ratingDto.getState() == null ? existingRate.getState() : VideogameStateEnum.valueOf(ratingDto.getState()));
     }
     
     Rating rating = this.ratingRepository.save(this.ratingMapper.toRating(savedRating));

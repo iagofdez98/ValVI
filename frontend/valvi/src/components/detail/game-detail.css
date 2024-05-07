@@ -1,6 +1,7 @@
 .button-group-column.mt-custom {
-  margin-top: 64px;
+  margin-top: 4rem;
 }
-.button-style {
-  width: 190px;
+.state-button {
+  width: 11rem;
+  cursor: pointer;
 }
