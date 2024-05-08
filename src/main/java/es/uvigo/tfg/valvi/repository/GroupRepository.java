@@ -18,8 +18,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
    * Find groups by username and videogames containing list.
    *
    * @param username  the username
-   * @param videogame the videogame
    * @return the list
    */
-  List<Group> findGroupsByUsernameAndVideogamesContaining(String username, Videogame videogame);
+  List<Group> findByUsername(String username);
 }

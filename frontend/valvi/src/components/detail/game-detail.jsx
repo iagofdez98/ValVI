@@ -14,7 +14,6 @@ const GameDetail = ({games = []}) => {
   const { id } = useParams();
   const [gameInfo, setGameInfo] = useState({});
   const [videogame, setVideogame] = useState({});
-  const [gameReview, setGameReview] = useState([])
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 

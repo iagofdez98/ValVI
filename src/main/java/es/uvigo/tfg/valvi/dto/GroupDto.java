@@ -25,7 +25,7 @@ public class GroupDto {
 
     private LocalDate date;
 
-    private UserDto username;
+    private String username;
 
     private List<VideogameDto> videogames;
 }

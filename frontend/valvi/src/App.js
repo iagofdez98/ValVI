@@ -9,6 +9,7 @@ import LoadingPage from './components/auth/auth';
 import { getAuthToken, getUsername } from './api_helper';
 import UserGames from './components/user-games';
 import ReviewList from './components/review/review-list';
+import ListDetails from './components/lists/lists-detail';
 
 const App = () => {
   const [games, setGames] = React.useState([])
@@ -38,7 +39,8 @@ const App = () => {
             <Route path="/home" element={<HomeContent/>} />
             <Route path="/game/:id" element={<GameDetail games={games} />} />
             <Route path='/games' element={<UserGames className='mt-4'></UserGames>} />
-            <Route path='/reviews' element={<ReviewList className='mt-4' lastReviews={1000}></ReviewList>} />
+            <Route path='/reviews' element={<ReviewList className='margin-container mt-4' lastReviews={1000}></ReviewList>} />
+            <Route path='/lists' element={<ListDetails/>}/>
           </Routes>
         <Footer/></>
         : <LoadingPage/>}

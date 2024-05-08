@@ -21,18 +21,16 @@ public class GroupController {
   
   @Autowired
   private GroupService groupService;
-
+  
   /**
    * Find groups list.
    *
-   * @param username    the username
-   * @param videogameId the videogame id
    * @return the list
    */
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<GroupDto> findGroups(@RequestBody String username, @RequestBody Integer videogameId){
-    return this.groupService.findGroups(username, videogameId);
+  public List<GroupDto> findGroups(){
+    return this.groupService.findGroups();
   }
 
   /**

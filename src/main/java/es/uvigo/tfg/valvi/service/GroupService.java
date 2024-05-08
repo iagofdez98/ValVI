@@ -10,14 +10,8 @@ import es.uvigo.tfg.valvi.dto.UserDto;
  */
 public interface GroupService {
 
-  /**
-   * Find groups list.
-   *
-   * @param username    the username
-   * @param videogameId the videogame id
-   * @return the list
-   */
-  List<GroupDto> findGroups(String username, Integer videogameId);
+
+  List<GroupDto> findGroups();
 
   /**
    * Upsert group group dto.

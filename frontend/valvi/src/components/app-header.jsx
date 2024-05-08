@@ -18,6 +18,7 @@ const Header = ({ username, games = []}) => {
                 <Nav className="me-auto">
                     <Nav.Link href="/games">Tus juegos</Nav.Link>
                     <Nav.Link href="/reviews">Reviews</Nav.Link>
+                    <Nav.Link href="/lists">Listas</Nav.Link>
                 </Nav>
                 <Nav>
                     <Searcher games={games}/>

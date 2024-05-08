@@ -52,4 +52,12 @@ public class Videogame {
         inverseJoinColumns = @JoinColumn(name = "id_genre")
     )
     private List<Genre> genres;
+
+    @ManyToMany
+    @JoinTable(
+        name = "lists_videogames",
+        joinColumns = @JoinColumn(name = "id_videogame"),
+        inverseJoinColumns = @JoinColumn(name = "id_list")
+    )
+    private List<Group> groups;
 }

@@ -31,14 +31,9 @@ public class GroupServiceImpl implements GroupService {
   @NonNull
   private GroupMapper groupMapper;
   
-  @NonNull
-  private VideogameRepository videogameRepository;
-  
   @Override
-  public List<GroupDto> findGroups(String username, Integer videogameId) {
-    Videogame videogame = this.videogameRepository.findById(videogameId).orElseThrow(() -> new EntityNotFoundException("Requested document/s have not been found"));
-    List<Group> groups = this.groupRepository.findGroupsByUsernameAndVideogamesContaining(username, videogame);   
-    
+  public List<GroupDto> findGroups() {
+    List<Group> groups = this.groupRepository.findAll();
     return this.groupMapper.toGroupDtoList(groups);
   }
 

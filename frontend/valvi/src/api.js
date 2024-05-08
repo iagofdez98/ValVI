@@ -235,6 +235,32 @@ const createReview = async (review) => {
   });
 }
 
+
+const findLists = async (filter) => {
+  try {
+    const url = `${BASE_URL}/groups`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getAuthToken() || ''
+      },
+      body: JSON.stringify(filter),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
+    throw error;
+  }
+}
+
 export default {
   loginUser,
   registerUser,
@@ -245,5 +271,6 @@ export default {
   upsertRating,
   getLastReviews,
   getReviewsByGame,
-  createReview
+  createReview,
+  findLists
 }

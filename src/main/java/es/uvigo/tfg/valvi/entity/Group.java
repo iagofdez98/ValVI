@@ -33,7 +33,7 @@ public class Group {
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User username;
-    
-    @OneToMany
+
+    @ManyToMany(mappedBy = "groups")
     private List<Videogame> videogames;
 }
