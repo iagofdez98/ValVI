@@ -17,8 +17,7 @@ const Header = ({ username, games = []}) => {
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/games">Tus juegos</Nav.Link>
-                    <Nav.Link href="#about">About</Nav.Link>
-                    <Nav.Link href="#contact">Contact</Nav.Link>
+                    <Nav.Link href="/reviews">Reviews</Nav.Link>
                 </Nav>
                 <Nav>
                     <Searcher games={games}/>

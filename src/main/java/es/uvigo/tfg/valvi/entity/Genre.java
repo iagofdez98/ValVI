@@ -1,7 +1,10 @@
 package es.uvigo.tfg.valvi.entity;
 
+import java.util.List;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +30,7 @@ public class Genre {
     private Integer id;
     
     private String description;
+
+    @ManyToMany(mappedBy = "genres")
+    private List<Videogame> videogames;
 }

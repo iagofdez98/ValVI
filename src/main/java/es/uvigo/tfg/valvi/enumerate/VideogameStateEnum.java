@@ -6,5 +6,6 @@ package es.uvigo.tfg.valvi.enumerate;
 public enum VideogameStateEnum {
     NONE, 
     PENDING,
-    PLAYED
+    PLAYED,
+    FAVORITE
 }

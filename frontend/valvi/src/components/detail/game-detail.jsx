@@ -7,7 +7,6 @@ import { getRatingByUserAndGame } from '../../services/rating-service';
 import { getDateFormatted } from '../utils/utils';
 import RatingModal from './rating-modal.jsx';
 import { upsertRating } from '../../services/rating-service';
-import { getReviewsByGame } from '../../services/review-service';
 import ReviewList from '../review/review-list.jsx';
 import AddReviewModal from './modal-add-review.jsx';
 
@@ -28,12 +27,6 @@ const GameDetail = ({games = []}) => {
   useEffect(() => {
     gameInfo?.videogame ? setVideogame(gameInfo.videogame) : setVideogame(games.find(game => game.id === parseInt(id)));
   }, [gameInfo]);
-
-  useEffect(() => {
-    getReviewsByGame(id)
-      .then(setGameReview)
-      .catch(() => setGameReview([]));
-  }, [id, gameInfo]);
 
   const handleState = (state) => {
     setGameInfo({ ...gameInfo, videogame, state });
@@ -72,6 +65,7 @@ const GameDetail = ({games = []}) => {
                   <ListGroup as="ul">
                     <ListGroup.Item className='text-center state-button' active={gameInfo.state === "PLAYED"} onClick={() => handleState("PLAYED")}>Jugado</ListGroup.Item>
                     <ListGroup.Item className='text-center state-button' active={gameInfo.state === "PENDING"} onClick={() => handleState("PENDING")}>Pendiente</ListGroup.Item>
+                    <ListGroup.Item className='text-center state-button' active={gameInfo.state === "FAVORITE"} onClick={() => handleState("FAVORITE")}>Favorito</ListGroup.Item>
                   </ListGroup>
                 </div>
                 </Col>
@@ -79,18 +73,20 @@ const GameDetail = ({games = []}) => {
                   <div>
                     <h3>Sobre el juego</h3>
                     <p className='mb-0'><strong>Desarrollador:</strong> {videogame.developer}</p>
-                    <p><strong>Fecha de lanzamiento:</strong> {getDateFormatted(videogame.releaseDate)}</p>
+                    <p className='mb-0'><strong>Fecha de lanzamiento:</strong> {getDateFormatted(videogame.releaseDate)}</p>
+                    <p className='mb-0'><strong>Géneros:</strong> {videogame.genres?.map(e => e.description).join(", ")}</p>
+                    <p><strong>PEGI {videogame.requiredAge}</strong></p>
                     <p>{videogame.description}</p>
                   </div>
                   <div>
-                  <div className="pt-3 d-flex align-items-center">
+                  <div className="pt-2 d-flex align-items-center">
                     <div className="d-flex flex-grow-1">
                       <h3 className="mr-auto">Reseñas</h3>
                     </div>
                     <Button variant="outline-dark" onClick={() => setIsReviewModalOpen(true)}>Añadir</Button>
                   </div>
                     <AddReviewModal show={isReviewModalOpen} handleClose={() => setIsReviewModalOpen(false)} videogame={videogame}/>
-                    <ReviewList reviews={gameReview}/>
+                    <ReviewList gameId={videogame.id}/>
                   </div>
                 </Col>
               </Row>

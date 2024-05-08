@@ -3,7 +3,7 @@ import "./game-list.css";
 import { Card, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const GameList = ({maxShowedGames, games = []}) => {
+const GameList = ({maxShowedGames = 1000, games = []}) => {
 
   return (
     <Row>

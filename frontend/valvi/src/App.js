@@ -7,9 +7,19 @@ import Header from './components/app-header';
 import { getGames } from './services/videogame-service';
 import LoadingPage from './components/auth/auth';
 import { getAuthToken, getUsername } from './api_helper';
+import UserGames from './components/user-games';
+import ReviewList from './components/review/review-list';
 
 const App = () => {
   const [games, setGames] = React.useState([])
+
+  useEffect(() => {
+    getGames().then((data) => {
+      setGames(data)
+    }).catch((error) => {
+      console.log(error)
+    });
+  }, []);
 
   useEffect(() => {
     getGames().then((data) => {
@@ -27,7 +37,8 @@ const App = () => {
           <Routes>
             <Route path="/home" element={<HomeContent/>} />
             <Route path="/game/:id" element={<GameDetail games={games} />} />
-            <Route path='/games' element={<HomeContent className='mt-4'><HomeContent listOnlyGames={true}/></HomeContent>} />
+            <Route path='/games' element={<UserGames className='mt-4'></UserGames>} />
+            <Route path='/reviews' element={<ReviewList className='mt-4' lastReviews={1000}></ReviewList>} />
           </Routes>
         <Footer/></>
         : <LoadingPage/>}

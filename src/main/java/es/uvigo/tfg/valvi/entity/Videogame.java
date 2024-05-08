@@ -44,7 +44,12 @@ public class Videogame {
     
     @Column(name = "DEVELOPER")
     private String developer;
-    
-    @OneToMany
+
+    @ManyToMany
+    @JoinTable(
+        name = "genres_videogames",
+        joinColumns = @JoinColumn(name = "id_videogame"),
+        inverseJoinColumns = @JoinColumn(name = "id_genre")
+    )
     private List<Genre> genres;
 }

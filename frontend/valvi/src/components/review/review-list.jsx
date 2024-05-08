@@ -3,20 +3,22 @@ import "./review-list.css";
 import { Container } from 'react-bootstrap';
 import { getLastReviews } from '../../services/review-service';
 import { getDateFormatted } from '../utils/utils';
+import { getReviewsByGame } from '../../services/review-service';
 
-const ReviewList = ({reviews}) => {
+const ReviewList = ({gameId, lastReviews = 2}) => {
   const [gameReviews, setGameReviews] = useState([])
 
   useEffect(() => {
-    if (reviews) {
-      setGameReviews(reviews)
+    if (gameId) {
+      getReviewsByGame(gameId)
+      .then(setGameReviews)
     } else {
-      getLastReviews(2).then(setGameReviews)
+      getLastReviews(lastReviews).then(setGameReviews)
     }
-  }, []);
+  }, [gameId, lastReviews]);
 
   const renderArticle = (review) => {
-    return (<article class="postcard light blue">
+    return (<article class="postcard light blue container-margin">
       <img class="postcard__img" src={review.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
       <div class="postcard__text t-dark">
         <h1 class="postcard__title">{review.title}</h1>
@@ -26,7 +28,7 @@ const ReviewList = ({reviews}) => {
           </time>
         </div>
         <div class="postcard__subtitle small">
-          <p>De: {review.username.username}</p>
+          <p>De: {review.username}</p>
         </div>
         <div class="postcard__bar"></div>
         <div class="postcard__preview-txt">{review.description}</div>
@@ -52,7 +54,7 @@ const ReviewList = ({reviews}) => {
 
   return (
 	<Container className='py-2'>
-    {gameReviews.map(review => reviews ? renderArticleLiteVersion(review) : renderArticle(review))}
+    {gameReviews.map(review => gameId ? renderArticleLiteVersion(review) : renderArticle(review))}
   </Container>
   );
 }
