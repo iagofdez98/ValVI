@@ -3,7 +3,6 @@ package es.uvigo.tfg.valvi.dto.filters;
 import java.time.LocalDate;
 import java.util.List;
 
-import es.uvigo.tfg.valvi.dto.DeveloperDto;
 import es.uvigo.tfg.valvi.dto.GenreDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,5 +30,5 @@ public class VideogameFiltering {
   
   private List<GenreDto> genres;
 
-  private List<DeveloperDto> developer;
+  private List<String> developer;
 }
