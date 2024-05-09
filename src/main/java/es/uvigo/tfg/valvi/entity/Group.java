@@ -34,6 +34,11 @@ public class Group {
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User username;
 
-    @ManyToMany(mappedBy = "groups")
+    @ManyToMany
+    @JoinTable(
+        name = "lists_videogames",
+        joinColumns = @JoinColumn(name = "id_list"),
+        inverseJoinColumns = @JoinColumn(name = "id_videogame")
+    )
     private List<Videogame> videogames;
 }

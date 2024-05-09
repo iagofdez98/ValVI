@@ -1,15 +1,15 @@
 package es.uvigo.tfg.valvi.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import es.uvigo.tfg.valvi.dto.GroupDto;
 import es.uvigo.tfg.valvi.entity.Group;
-import es.uvigo.tfg.valvi.entity.Videogame;
+import es.uvigo.tfg.valvi.entity.User;
 import es.uvigo.tfg.valvi.mapper.GroupMapper;
 import es.uvigo.tfg.valvi.repository.GroupRepository;
-import es.uvigo.tfg.valvi.repository.VideogameRepository;
+import es.uvigo.tfg.valvi.repository.UserRepository;
 import es.uvigo.tfg.valvi.service.GroupService;
-import javax.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +30,9 @@ public class GroupServiceImpl implements GroupService {
 
   @NonNull
   private GroupMapper groupMapper;
+
+  @NonNull
+  private UserRepository userRepository;
   
   @Override
   public List<GroupDto> findGroups() {
@@ -39,8 +42,11 @@ public class GroupServiceImpl implements GroupService {
 
   @Override
   public GroupDto upsertGroup(GroupDto groupDto) {
-    Group group = this.groupRepository.save(this.groupMapper.toGroup(groupDto));
-    
+    groupDto.setDate(LocalDate.now());
+    User user = this.userRepository.findByUsername(groupDto.getUsername());
+    Group group = this.groupMapper.toGroup(groupDto);
+    group.setUsername(user);
+    this.groupRepository.save(group);
     return this.groupMapper.toGroupDto(group);
   }
 

@@ -54,6 +54,9 @@ const ReviewList = ({gameId, lastReviews = 2}) => {
 
   return (
 	<Container className='py-2'>
+    <div className="d-flex flex-grow-1 pt-2 container-card">
+      <h3 className="mb-3 text-left">Reviews de la comunidad</h3>
+    </div>
     {gameReviews.map(review => gameId ? renderArticleLiteVersion(review) : renderArticle(review))}
   </Container>
   );

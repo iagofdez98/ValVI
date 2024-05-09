@@ -40,7 +40,7 @@ const App = () => {
             <Route path="/game/:id" element={<GameDetail games={games} />} />
             <Route path='/games' element={<UserGames className='mt-4'></UserGames>} />
             <Route path='/reviews' element={<ReviewList className='margin-container mt-4' lastReviews={1000}></ReviewList>} />
-            <Route path='/lists' element={<ListDetails/>}/>
+            <Route path='/lists' element={<ListDetails games={games}/>}/>
           </Routes>
         <Footer/></>
         : <LoadingPage/>}

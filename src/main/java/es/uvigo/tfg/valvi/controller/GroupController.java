@@ -51,9 +51,9 @@ public class GroupController {
    * @param id the id
    * @return the integer
    */
-  @DeleteMapping
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Integer deleteGroup(@NonNull Integer id){
+  public Integer deleteGroup(@NonNull @PathVariable Integer id){
     return this.groupService.deleteGroup(id);
   }
 }

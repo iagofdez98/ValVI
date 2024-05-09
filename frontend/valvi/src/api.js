@@ -261,6 +261,35 @@ const findLists = async (filter) => {
   }
 }
 
+const createList = async (list) => {
+  const url = `${BASE_URL}/groups`;
+  const bodyData = {
+    ...list,
+    username: getUsername()
+  };
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getAuthToken() || ''
+    },
+    body: JSON.stringify(bodyData),
+  });
+}
+
+const deleteList = async (id) => {
+  const url = `${BASE_URL}/groups/${id}`;
+
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getAuthToken() || ''
+    },
+  });
+}
+
 export default {
   loginUser,
   registerUser,
@@ -272,5 +301,7 @@ export default {
   getLastReviews,
   getReviewsByGame,
   createReview,
-  findLists
+  findLists,
+  createList,
+  deleteList
 }
