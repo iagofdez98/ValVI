@@ -18,20 +18,20 @@ const ReviewList = ({gameId, lastReviews = 2}) => {
   }, [gameId, lastReviews]);
 
   const renderArticle = (review) => {
-    return (<article class="postcard light blue container-margin">
-      <img class="postcard__img" src={review.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
-      <div class="postcard__text t-dark">
-        <h1 class="postcard__title">{review.title}</h1>
-        <div class="postcard__subtitle small">
+    return (<article className="postcard light blue container-margin">
+      <img className="postcard__img" src={review.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
+      <div className="postcard__text t-dark">
+        <h1 className="postcard__title">{review.title}</h1>
+        <div className="postcard__subtitle small">
           <time datetime="2020-05-25 12:00:00">
-            <i class="fas fa-calendar-alt mr-2"></i>{getDateFormatted(review.date)}
+            <i className="fas fa-calendar-alt mr-2"></i>{getDateFormatted(review.date)}
           </time>
         </div>
-        <div class="postcard__subtitle small">
+        <div className="postcard__subtitle small">
           <p>De: {review.username}</p>
         </div>
-        <div class="postcard__bar"></div>
-        <div class="postcard__preview-txt">{review.description}</div>
+        <div className="postcard__bar"></div>
+        <div className="postcard__preview-txt">{review.description}</div>
       </div>
     </article>
   )};
@@ -54,9 +54,9 @@ const ReviewList = ({gameId, lastReviews = 2}) => {
 
   return (
 	<Container className='py-2'>
-    <div className="d-flex flex-grow-1 pt-2 container-card">
+    {!gameId && <div className="d-flex flex-grow-1 pt-2 container-card">
       <h3 className="mb-3 text-left">Reviews de la comunidad</h3>
-    </div>
+    </div>}
     {gameReviews.map(review => gameId ? renderArticleLiteVersion(review) : renderArticle(review))}
   </Container>
   );
