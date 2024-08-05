@@ -1,0 +1,83 @@
+{
+  "name": "react-multiselect-checkboxes",
+  "version": "0.1.1",
+  "description": "Spiffy multiselect with checkboxes",
+  "main": "lib/index.js",
+  "scripts": {
+    "munge": "rm -rf node_modules/babel-core && cp -R node_modules/@babel/core node_modules/babel-core",
+    "dev": "concurrently \"npm run lib:watch\" \"npm run docs\" \"npm run storybook\"",
+    "lib": "babel src/lib -d lib --copy-files",
+    "lib:watch": "babel src/lib -w -d lib --copy-files",
+    "docs": "webpack-dev-server --mode development",
+    "docs:prod": "webpack --mode production",
+    "build": "npm run lib && npm run docs:prod && npm run build-storybook",
+    "prepare": "npm run build",
+    "storybook": "start-storybook -p 6006",
+    "prestorybook": "npm run munge",
+    "prebuild-storybook": "npm run munge",
+    "build-storybook": "build-storybook -o docs/storybook"
+  },
+  "keywords": [
+    "react",
+    "select",
+    "multiselect",
+    "checkbox"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^15.3.0 || ^16.2.0",
+    "react-dom": "^15.3.0 || ^16.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.46",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
+    "@babel/plugin-proposal-decorators": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-function-sent": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/preset-react": "^7.0.0-beta.46",
+    "@babel/preset-stage-2": "^7.0.0-rc.1",
+    "@storybook/addon-actions": "^4.0.0-alpha.18",
+    "@storybook/addon-info": "^4.0.0-alpha.16",
+    "@storybook/addon-links": "^4.0.0-alpha.16",
+    "@storybook/addon-storysource": "^4.0.0-alpha.16",
+    "@storybook/addons": "^4.0.0-alpha.16",
+    "@storybook/react": "^4.0.0-alpha.16",
+    "@types/storybook__react": "^3.0.9",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^8.0.0-beta.4",
+    "concurrently": "^3.6.1",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.47.1",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.8.2",
+    "html-webpack-plugin": "^3.2.0",
+    "prettier": "^1.14.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.3.2",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "author": "Ian Sibner <sibnerian@gmail.com>",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "deepmerge": "^2.1.1",
+    "emotion": "^9.1.2",
+    "prop-types": "^15.6.2",
+    "react-select": "^2.1.1"
+  }
+}

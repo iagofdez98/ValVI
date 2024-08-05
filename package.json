@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "appid": "^1.0.3",
+    "bootstrap": "^5.3.3",
+    "http-proxy-middleware": "^3.0.0",
+    "react-bootstrap-multiselect": "^2.4.1",
+    "react-multiselect-checkboxes": "^0.1.1",
+    "react-router-dom": "^6.23.0"
+  }
+}
