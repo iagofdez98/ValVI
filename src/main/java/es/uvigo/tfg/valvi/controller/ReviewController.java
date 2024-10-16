@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/reviews")
 public class ReviewController {
-  
+
   @Autowired
   private ReviewService reviewService;
 
@@ -67,7 +67,7 @@ public class ReviewController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ReviewDto upsertReview(@RequestBody ReviewDto reviewDto){
-    return this.reviewService.upsertReview(reviewDto);    
+    return this.reviewService.upsertReview(reviewDto);
   }
 
   /**
@@ -76,10 +76,9 @@ public class ReviewController {
    * @param id the id
    * @return the integer
    */
-  @DeleteMapping
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Integer deleteReview(Integer id){
+  public Integer deleteReview(@NonNull @PathVariable Integer id){
     return this.reviewService.deleteReview(id);
   }
-  
 }
