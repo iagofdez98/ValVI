@@ -2,29 +2,37 @@ import React from 'react';
 import LoginForm from '../login/login-form';
 import api from '../../api';
 
-const LoadingPage = ({onLogin}) => {
+const LoadingPage = () => {
   const handleLogin = (formData) => {
-    api.loginUser(formData.username, formData.password)
+    api.loginUser(formData.username, formData.password).then(() => {
+      refreshPage();
+    });
   };
 
   const handleRegister = (formData) => {
-    api.registerUser(formData.username, formData.password).then((response) => {
-      console.log(response);
+    api.registerUser(formData.username, formData.password).then(() => {
+      refreshPage();
     });
   }
 
+  const refreshPage = () => {
+    window.location.reload();
+  }
 
-  return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-md-8 text-center">
-          <h1 className="mt-5">Bienvenidos a Valvi</h1>
-          <p className="lead">¡Explora y valora los mejores videojuegos!</p>
-          <LoginForm onLogin={handleLogin} onRegister={handleRegister}/>
+    return (
+      <div className="container-page-login">
+        <div className="left-column">
+          <h1>ValVi</h1>
+          <p>
+            Aquí puedes manejar tus videojuegos, añadir nuevos títulos a tu lista y
+            organizar tus juegos favoritos de manera sencilla.
+          </p>
+        </div>
+        <div className="right-column">
+          <LoginForm onLogin={handleLogin} onRegister={handleRegister} />
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default LoadingPage;

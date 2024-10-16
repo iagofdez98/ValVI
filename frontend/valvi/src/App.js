@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomeContent from './components/home/home-content';
 import GameDetail from './components/detail/game-detail';
 import Footer from './components/app-footer';
@@ -33,16 +33,17 @@ const App = () => {
   return (
     <div className='bg-dark text-light'>
       <Router>
-      {getAuthToken() != null ? <>
+      {getAuthToken() != null ? <div style={{minHeight: "100vh"}}>
         <Header username={getUsername()} games={games}/>
           <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/home" element={<HomeContent/>} />
             <Route path="/game/:id" element={<GameDetail games={games} />} />
             <Route path='/games' element={<UserGames className='mt-4'></UserGames>} />
             <Route path='/reviews' element={<ReviewList className='margin-container mt-4' lastReviews={1000}></ReviewList>} />
             <Route path='/lists' element={<ListDetails games={games}/>}/>
           </Routes>
-        <Footer/></>
+        <Footer/></div>
         : <LoadingPage/>}
       </Router>
     </div>

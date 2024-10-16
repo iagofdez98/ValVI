@@ -1,6 +1,12 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .button-group-column.mt-custom {
   margin-top: 10rem;
 }
+
 .state-button {
   width: 15rem;
   cursor: pointer;

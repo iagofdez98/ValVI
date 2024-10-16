@@ -1,3 +1,4 @@
+import "./login-form.css";
 import React from 'react';
 
 const LoginForm = ({ onLogin, onRegister }) => {
@@ -23,33 +24,38 @@ const LoginForm = ({ onLogin, onRegister }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Nombre de usuario"
-          value={username}
-          onChange={handleUsernameChange}
-          required
+    <form className="form-auth" onSubmit={handleSubmit}>
+    <p className="form-title">Accede a tu cuenta</p>
+    <div className="input-container">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Nombre de usuario"
+        value={username}
+        onChange={handleUsernameChange}
+        required
         />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          placeholder="Contraseña"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-        />
-      </div>
-      <div className="d-flex justify-content-between">
-        <button type="submit" className="btn btn-primary">Iniciar sesión</button>
-        <button type="button" className="btn btn-secondary" onClick={handleRegister}>Registrarse</button>
-      </div>
-    </form>
-  );
+    </div>
+    <div className="input-container">
+      <input
+        type="password"
+        className="form-control"
+        placeholder="Contraseña"
+        value={password}
+        onChange={handlePasswordChange}
+        required
+      />
+    </div>
+    <button className="submit" type="submit">
+      Acceder
+    </button>
+
+    <p className="signup-link">
+      ¿Todavía no tienes cuenta?
+      <a href="" onClick={handleRegister}> Registrarse</a>
+    </p>
+  </form>
+  )
 };
 
 export default LoginForm;
