@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import "./review-list.css";
-import { Container } from 'react-bootstrap';
-import { getLastReviews } from '../../services/review-service';
+import { Container, Button } from 'react-bootstrap';
+import { getLastReviews, deleteReview } from '../../services/review-service';
 import { getDateFormatted } from '../utils/utils';
 import { getReviewsByGame } from '../../services/review-service';
+import { getUsername } from '../../api_helper';
 
 const ReviewList = ({gameId, lastReviews = 2}) => {
   const [gameReviews, setGameReviews] = useState([])
@@ -17,11 +18,25 @@ const ReviewList = ({gameId, lastReviews = 2}) => {
     }
   }, [gameId, lastReviews]);
 
+  const handleDeleteReview = (id) => {
+    deleteReview(id).then(() => {
+      getLastReviews(lastReviews).then(setGameReviews)
+    })
+  }
+
   const renderArticle = (review) => {
     return (<article className="postcard light blue container-margin">
       <img className="postcard__img" src={review.videogame.image} alt="Title" style={{ maxHeight: '20rem', objectFit: 'cover' }}/>
       <div className="postcard__text t-dark">
-        <h1 className="postcard__title">{review.title}</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1 className="postcard__title">{review.title}</h1>
+
+          {review.username === getUsername() && (
+            <Button variant="danger" onClick={() => handleDeleteReview(review.id)}>
+              Borrar
+            </Button>
+          )}
+        </div>
         <div className="postcard__subtitle small">
           <time datetime="2020-05-25 12:00:00">
             <i className="fas fa-calendar-alt mr-2"></i>{getDateFormatted(review.date)}

@@ -1,4 +1,4 @@
-import { setAuthToken, getAuthToken, setUsername, getUsername } from "./api_helper";
+import { setAuthToken, getAuthToken, setUsername, getUsername, removeAuthToken } from "./api_helper";
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -127,7 +127,7 @@ const getGamesByUser = async () => {
     return data;
   } catch (error) {
     console.error('Se produjo un error:', error);
-    setAuthToken(null);
+    removeAuthToken();
     // Puedes lanzar el error nuevamente si quieres manejarlo en el componente que llama a esta función
     throw error;
   }
@@ -290,6 +290,18 @@ const deleteList = async (id) => {
   });
 }
 
+const deleteReview = async (id) => {
+  const url = `${BASE_URL}/reviews/${id}`;
+
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getAuthToken() || ''
+    },
+  });
+}
+
 export default {
   loginUser,
   registerUser,
@@ -301,6 +313,7 @@ export default {
   getLastReviews,
   getReviewsByGame,
   createReview,
+  deleteReview,
   findLists,
   createList,
   deleteList

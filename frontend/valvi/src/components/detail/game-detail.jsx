@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './game-detail.css';
+import Rating from '@mui/material/Rating';
 import { useParams } from 'react-router-dom';
 import { Container, Col, Row, Button } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -16,6 +17,8 @@ const GameDetail = ({games = []}) => {
   const [videogame, setVideogame] = useState({});
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [shouldRenderReviewList, setShouldRenderReviewList] = useState(false);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     getRatingByUserAndGame(id)
@@ -25,11 +28,23 @@ const GameDetail = ({games = []}) => {
 
   useEffect(() => {
     gameInfo?.videogame ? setVideogame(gameInfo.videogame) : setVideogame(games.find(game => game.id === parseInt(id)));
+    gameInfo?.qualification ? setRating(gameInfo.qualification) : setRating(0);
   }, [gameInfo]);
 
   const handleState = (state) => {
     setGameInfo({ ...gameInfo, videogame, state });
     upsertRating(gameInfo);
+  };
+
+  const handleClose = () => {
+    setIsReviewModalOpen(false);
+    setShouldRenderReviewList(prev => !prev); // Forza el re-render de ReviewList
+  }
+
+  const handleSaveRating = (value) => {
+    setRating(value);
+    upsertRating({videogame: gameInfo?.videogame, qualification: value});
+    handleClose();
   };
 
   return (
@@ -49,11 +64,16 @@ const GameDetail = ({games = []}) => {
                   </div>
                 </div>
                 <div className="position-absolute top-0 end-0 mt-3 me-4">
-                  <h3 className="bg-dark px-2 py-1 rounded text-white text-center">{videogame.averageRating}</h3>
-                  {gameInfo?.qualification ?
-                    <p className="px-2 py-1 text-white">Tu nota: {gameInfo?.qualification}</p> :
-                    <Button variant="light" onClick={() => setIsRatingModalOpen(true)}>¿Valorar?</Button>
-                  }
+                  <h3 className="bg-dark px-2 py-1 rounded text-white text-center">
+                    <Rating
+                      name="simple-controlled"
+                      precision={0.5}
+                      value={rating !== 0 ? rating : videogame.averageRating}
+                      onChange={(event, newValue) => {
+                        handleSaveRating(newValue);
+                      }}
+                    />
+                  </h3>
                 </div>
               </Container>
             </Row>
@@ -84,8 +104,8 @@ const GameDetail = ({games = []}) => {
                     </div>
                     <Button variant="outline-dark" onClick={() => setIsReviewModalOpen(true)}>Añadir</Button>
                   </div>
-                    <AddReviewModal show={isReviewModalOpen} handleClose={() => setIsReviewModalOpen(false)} videogame={videogame}/>
-                    <ReviewList gameId={videogame.id}/>
+                    <AddReviewModal show={isReviewModalOpen} handleClose={() => handleClose()} videogame={videogame}/>
+                    <ReviewList key={shouldRenderReviewList} gameId={videogame.id}/>
                   </div>
                 </Col>
               </Row>

@@ -14,3 +14,7 @@ export const getUsername = () => {
 export const setUsername = (username) => {
   localStorage.setItem('username', username);
 }
+
+export const removeAuthToken = () => {
+  localStorage.removeItem('auth_token');
+}

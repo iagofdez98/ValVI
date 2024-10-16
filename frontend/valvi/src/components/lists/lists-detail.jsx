@@ -3,7 +3,7 @@ import "./lists-detail.css"
 import { Card, Container, Button } from 'react-bootstrap';
 import GameList from '../home/game-list';
 import { findLists, deleteList } from "../../services/lists-service";
-import ListModal from './create-list-modal';
+import CreateListModal from './create-list-modal';
 import { getUsername } from '../../api_helper';
 
 const ListDetails = ({games}) => {
@@ -19,9 +19,15 @@ const ListDetails = ({games}) => {
       findLists().then(setLists)
     })
   }
+
+  const handleClose = () => {
+    setIsListModalOpen(false);
+    findLists().then(setLists)
+  }
+
   return (
     <Container className='container-accordion'>
-      <ListModal show={isListModalOpen} handleClose={() => setIsListModalOpen(false)} games={games}/>
+      <CreateListModal show={isListModalOpen} handleClose={() => handleClose()} games={games}/>
       <div className='container-card'>
         <div className="pt-2 d-flex align-items-center">
           <div className="d-flex flex-grow-1">
